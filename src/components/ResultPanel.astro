@@ -1,0 +1,20 @@
+---
+// Sticky live result panel. Each region has an id the client island re-renders.
+import { t } from '../content/i18n';
+import type { Lang } from '../content/data';
+import type { Result } from '../lib/scoring';
+import { panelHead, scoreBlock, tierBlock, roiBlock } from '../lib/render';
+import Radar from './Radar.astro';
+
+interface Props { lang: Lang; result: Result }
+const { lang, result } = Astro.props;
+---
+<aside class="panel" id="result" aria-labelledby="result-h">
+  <h2 class="sr-only" id="result-h">{t(lang, 'readiness')}</h2>
+  <div class="panel-head" id="panel-head" set:html={panelHead(result, lang)} />
+  <div class="score-row" id="score" set:html={scoreBlock(result, lang)} />
+  <Radar lang={lang} scores={result.scores} />
+  <div class="tier" id="tier" set:html={tierBlock(result, lang)} />
+  <div class="roi" id="roi" set:html={roiBlock(result, lang)} />
+  <a class="to-brief" href="#brief">{t(lang, 'see_brief')}</a>
+</aside>

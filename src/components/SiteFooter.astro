@@ -1,0 +1,49 @@
+---
+// Builder band (the blue CTA band that closes every hashinclu.de page), footer and bottom bar.
+import { t } from '../content/i18n';
+import { SOURCE_URL, type Lang } from '../content/data';
+import { emphasise } from '../lib/render';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const other: Lang = lang === 'en' ? 'ar' : 'en';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = `https://hashinclu.de/${lang}`;
+const insight = lang === 'ar' ? SOURCE_URL.replace('/en/', '/ar/') : SOURCE_URL;
+const arrow = lang === 'ar' ? '←' : '→';
+---
+<section class="band-cta on-blue" aria-labelledby="band-h">
+  <div class="wrap">
+    <div>
+      <span class="tag">{t(lang, 'note_eyebrow')}</span>
+      <h2 id="band-h" set:html={emphasise(t(lang, 'note_h'))} />
+      <p>{t(lang, 'note_plug1')}</p>
+    </div>
+    <button type="button" class="btn btn--white" data-open-note aria-haspopup="dialog">{t(lang, 'note_btn')} <span aria-hidden="true">{arrow}</span></button>
+  </div>
+</section>
+<footer class="footer dark">
+  <div class="wrap">
+    <div>
+      <a class="wordmark" href={`${site}/`} aria-label="Hashinclude"><b>#</b>include</a>
+      <p>{t(lang, 'foot1')}</p>
+      <p>{t(lang, 'foot2')} <a href={`${site}/`} rel="noopener" target="_blank" dir="ltr">hashinclu.de</a></p>
+    </div>
+    <div>
+      <p class="foot-title">{t(lang, 'foot_sources')}</p>
+      <ul>
+        <li><a href={insight} rel="noopener" target="_blank">{t(lang, 'ladder_src')}</a></li>
+        <li><a href={`${site}/automate`} rel="noopener" target="_blank">{t(lang, 'foot_automate')}</a></li>
+        <li><a href={`${site}/projects`} rel="noopener" target="_blank">{t(lang, 'nav_projects')}</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="foot-title">{t(lang, 'proto')}</p>
+      <ul>
+        <li><button type="button" class="linklike" data-open-note aria-haspopup="dialog">{t(lang, 'note_btn')}</button></li>
+        <li><a href={`${base}/${other}/readiness/`} lang={other} hreflang={other} data-lang-switch={other}>{t(lang, 'lang_switch')}</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom"><div class="wrap">{t(lang, 'foot_noindex')}</div></div>
+</footer>

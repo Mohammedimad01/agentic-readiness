@@ -1,0 +1,13 @@
+---
+// Seven-dimension radar (inline SVG, always LTR). Re-rendered client-side into #radar.
+import { t } from '../content/i18n';
+import type { Lang } from '../content/data';
+import { radarSVG } from '../lib/render';
+
+interface Props { lang: Lang; scores: (number | null)[] }
+const { lang, scores } = Astro.props;
+---
+<figure class="radar">
+  <div id="radar" set:html={radarSVG(scores, lang)} />
+  <figcaption>{t(lang, 'radar_cap')}</figcaption>
+</figure>

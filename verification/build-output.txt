@@ -1,0 +1,33 @@
+20:00:14 [content] Syncing content
+20:00:14 [content] Synced content
+20:00:14 [types] Generated 217ms
+20:00:14 [build] output: "static"
+20:00:14 [build] mode: "static"
+20:00:14 [build] directory: C:\Users\MOHAMMED IMAD\Hashinclude\agentic-readiness\dist\
+20:00:14 [build] Collecting build info...
+20:00:14 [build] ✓ Completed in 295ms.
+20:00:14 [build] Building static entrypoints...
+20:00:18 [vite] ✓ built in 4.11s
+20:00:18 [build] ✓ Completed in 4.24s.
+
+ building client (vite) 
+20:00:18 [vite] transforming...
+20:00:19 [vite] ✓ 6 modules transformed.
+20:00:19 [vite] rendering chunks...
+20:00:19 [vite] computing gzip size...
+20:00:19 [vite] dist/_astro/ReadinessPage.astro_astro_type_script_index_0_lang.C1AVLkjr.js  54.75 kB │ gzip: 20.38 kB
+20:00:19 [vite] ✓ built in 328ms
+
+ generating static routes 
+20:00:19 ▶ src/pages/ar/readiness.astro
+20:00:19   └─ /ar/readiness/index.html (+70ms) 
+20:00:19 ▶ src/pages/en/readiness.astro
+20:00:19   └─ /en/readiness/index.html (+50ms) 
+20:00:19 ▶ src/pages/index.astro
+20:00:19   └─ /index.html (+7ms) 
+20:00:19 ▶ /readiness
+20:00:19   └─ /readiness/index.html (+8ms) 
+20:00:19 ✓ Completed in 215ms.
+
+20:00:19 [build] 3 page(s) built in 5.21s
+20:00:19 [build] Complete!

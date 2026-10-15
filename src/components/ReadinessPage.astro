@@ -1,0 +1,144 @@
+---
+// The whole tool for one locale. Server-renders the worked example so the page is complete
+// without JavaScript; src/scripts/readiness.ts then makes every region live.
+import Base from '../layouts/Base.astro';
+import SiteHeader from './SiteHeader.astro';
+import Hero from './Hero.astro';
+import Question from './Question.astro';
+import WorkflowPicker from './WorkflowPicker.astro';
+import ResultPanel from './ResultPanel.astro';
+import Brief from './Brief.astro';
+import BuilderNote from './BuilderNote.astro';
+import SiteFooter from './SiteFooter.astro';
+import { t, type StringKey } from '../content/i18n';
+import { QUESTIONS, SECTORS, SIZES, WFCOUNT, SYSTEMS, type Lang, type Choice } from '../content/data';
+import { compute, exampleState, BOUNDS } from '../lib/scoring';
+import { mobileBar, shareHint } from '../lib/render';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const state = exampleState();
+const result = compute(state);
+
+const selects: { id: string; field: string; label: StringKey; list: Choice[]; hint?: StringKey }[] = [
+  { id: 'f-sector', field: 'sector', label: 'sector', list: SECTORS },
+  { id: 'f-size', field: 'size', label: 'size', list: SIZES },
+  { id: 'f-wfcount', field: 'wfCount', label: 'wfcount', list: WFCOUNT },
+  { id: 'f-systems', field: 'systems', label: 'systems', list: SYSTEMS, hint: 'systems_hint' },
+];
+const numbers = [
+  { id: 'f-people', field: 'people', label: 'people', b: BOUNDS.people },
+  { id: 'f-hours', field: 'hours', label: 'hours', b: BOUNDS.hours },
+  { id: 'f-rate', field: 'rate', label: 'rate', b: BOUNDS.rate },
+] as const;
+const value = (f: string) => (state as unknown as Record<string, string | number | null>)[f] ?? '';
+const title = lang === 'ar' ? `${t(lang, 'h1')} | Hashinclude` : `Agentic AI readiness check | Hashinclude`;
+---
+<Base lang={lang} title={title} description={t(lang, 'lede')}>
+  <SiteHeader lang={lang} />
+  <main>
+    <Hero lang={lang} result={result} />
+
+    <section class="sec" id="check" aria-label={t(lang, 'h1')}>
+      <div class="wrap">
+        <div class="notice" id="notice">
+          <p id="notice-text">{t(lang, 'ex_note')}</p>
+          <div class="notice-actions">
+            <button type="button" class="btn btn--line btn--sm" id="btn-blank">{t(lang, 'blank')}</button>
+            <button type="button" class="btn btn--line btn--sm" id="btn-example">{t(lang, 'example')}</button>
+          </div>
+        </div>
+
+        <div class="layout">
+          <form class="form" id="form" novalidate>
+            <section class="part" aria-labelledby="p1-h">
+              <div class="part-head">
+                <span class="tag" dir="ltr">01 / 03</span>
+                <h2 class="h2" id="p1-h">{t(lang, 'p1')}</h2>
+              </div>
+              <div class="fields">
+                <div class="field span2">
+                  <label for="f-company">{t(lang, 'company')}</label>
+                  <input class="input" id="f-company" data-field="company" type="text" autocomplete="organization"
+                         maxlength="80" placeholder={t(lang, 'company_ph')} dir="auto" />
+                </div>
+                {selects.map((s) => (
+                  <div class="field">
+                    <label for={s.id}>{t(lang, s.label)}</label>
+                    <select class="select" id={s.id} data-field={s.field} aria-describedby={s.hint ? `${s.id}-hint` : undefined}>
+                      <option value="">{t(lang, 'choose')}</option>
+                      {s.list.map((o) => <option value={o.id} selected={value(s.field) === o.id}>{o[lang]}</option>)}
+                    </select>
+                    {s.hint && <p class="hint" id={`${s.id}-hint`}>{t(lang, s.hint)}</p>}
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            <section class="part" aria-labelledby="p2-h">
+              <div class="part-head">
+                <span class="tag" dir="ltr">02 / 03</span>
+                <h2 class="h2" id="p2-h">{t(lang, 'p2')}</h2>
+                <p class="sub">{t(lang, 'p2_sub')}</p>
+              </div>
+              <div class="qlist">
+                {QUESTIONS.map((q, i) => (
+                  <Question q={q} index={i} lang={lang} selected={state.q[q.id]}>
+                    {q.id === 'q1' && <WorkflowPicker lang={lang} selected={state.workflow} />}
+                  </Question>
+                ))}
+              </div>
+            </section>
+
+            <section class="part" aria-labelledby="p3-h">
+              <div class="part-head">
+                <span class="tag" dir="ltr">03 / 03</span>
+                <h2 class="h2" id="p3-h">{t(lang, 'p3')}</h2>
+                <p class="sub">{t(lang, 'p3_sub')}</p>
+              </div>
+              <div class="fields">
+                {numbers.map((n) => (
+                  <div class="field">
+                    <label for={n.id}>{t(lang, n.label)}</label>
+                    <input class="input" id={n.id} data-field={n.field} type="number" inputmode="numeric"
+                           min={n.b.min} max={n.b.max} step={n.b.step} value={value(n.field)} dir="ltr" />
+                  </div>
+                ))}
+                <div class="field">
+                  <label for="f-share">{t(lang, 'share')}</label>
+                  <div class="range-row">
+                    <input class="range" id="f-share" data-field="share" type="range"
+                           min={BOUNDS.share.min} max={BOUNDS.share.max} step={BOUNDS.share.step} value={state.share}
+                           aria-describedby="share-hint" />
+                    <output class="range-out" id="share-out" for="f-share" dir="ltr">{state.share}%</output>
+                  </div>
+                  <p class="hint" id="share-hint">{shareHint(state, lang)}</p>
+                </div>
+              </div>
+              <p class="calc-note">
+                <span>{t(lang, 'calc_note')}</span>
+                <span class="formula">{t(lang, 'formula')}</span>
+              </p>
+            </section>
+          </form>
+
+          <ResultPanel lang={lang} result={result} />
+        </div>
+      </div>
+    </section>
+
+    <Brief lang={lang} state={state} result={result} />
+  </main>
+  <SiteFooter lang={lang} />
+
+  <div class="mbar" aria-label={t(lang, 'readiness')} role="region">
+    <div class="mbar-live" id="mbar" set:html={mobileBar(result, lang)} />
+    <a href="#result">{t(lang, 'see_result')}</a>
+  </div>
+  <p class="sr-only" id="live" aria-live="polite" aria-atomic="true"></p>
+
+  <BuilderNote lang={lang} />
+  <script>
+    import '../scripts/readiness.ts';
+  </script>
+</Base>

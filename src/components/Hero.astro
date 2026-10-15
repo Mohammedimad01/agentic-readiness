@@ -1,0 +1,35 @@
+---
+// Dark inner-page hero (the /automate pattern): breadcrumb eyebrow, light/bold headline,
+// lede, two buttons, and a terminal with the live readout in snake_case.
+import { t } from '../content/i18n';
+import type { Lang } from '../content/data';
+import type { Result } from '../lib/scoring';
+import { terminalRows } from '../lib/render';
+
+interface Props { lang: Lang; result: Result }
+const { lang, result } = Astro.props;
+const crumbs = t(lang, 'eyebrow').split(' · ');
+---
+<section class="hero dark" aria-labelledby="hero-h">
+  <div class="wrap">
+    <div>
+      <ol class="crumb" aria-label={t(lang, 'eyebrow')}>
+        {crumbs.map((c) => <li>{c}</li>)}
+      </ol>
+      <h1 id="hero-h">{t(lang, 'h1_a')} <strong>{t(lang, 'h1_b')}</strong></h1>
+      <p class="lede">{t(lang, 'lede')}</p>
+      <ul class="specs">
+        {(['spec1', 'spec2', 'spec3', 'spec4'] as const).map((k) => <li>{t(lang, k)}</li>)}
+      </ul>
+      <div class="hero-actions">
+        <a class="btn btn--primary" href="#check">{t(lang, 'start')}</a>
+        <button type="button" class="btn btn--ghost" data-open-note aria-haspopup="dialog">{t(lang, 'note_btn')}</button>
+      </div>
+    </div>
+    <div class="terminal" role="group" aria-label={t(lang, 'readiness')}>
+      <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>readiness_check</span></div>
+      <div id="term-rows" set:html={terminalRows(result, lang)} />
+      <p class="term-note">{t(lang, 'term_note')}</p>
+    </div>
+  </div>
+</section>

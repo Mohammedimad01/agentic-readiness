@@ -1,0 +1,22 @@
+---
+// Six workflow tiles under Q1, styled as the /automate service cards.
+import { t } from '../content/i18n';
+import { WORKFLOWS, type Lang } from '../content/data';
+
+interface Props { lang: Lang; selected: string | null }
+const { lang, selected } = Astro.props;
+---
+<fieldset class="wf-pick">
+  <legend>{t(lang, 'wf_pick')}</legend>
+  <div class="wf-grid">
+    {WORKFLOWS.map((w) => (
+      <label class="wf" for={`wf-${w.id}`}>
+        <input type="radio" name="workflow" id={`wf-${w.id}`} value={w.id} checked={selected === w.id} />
+        <span class="icon-tag" aria-hidden="true">{w.tag}</span>
+        <span class="wf-title">{w.name[lang]}</span>
+        <span class="wf-desc">{w.desc[lang]}</span>
+        <span class="key" aria-hidden="true">default_share <b>{w.share}%</b></span>
+      </label>
+    ))}
+  </div>
+</fieldset>

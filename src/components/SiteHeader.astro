@@ -1,0 +1,42 @@
+---
+// Prototype disclosure (sticky, always visible) + a nav bar in the hashinclu.de pattern.
+// Nav links go to public hashinclu.de pages only; no contact or booking endpoints.
+import { t } from '../content/i18n';
+import type { Lang } from '../content/data';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const other: Lang = lang === 'en' ? 'ar' : 'en';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const site = `https://hashinclu.de/${lang}`;
+const links = [
+  ['nav_who', `${site}/who-we-are`],
+  ['nav_how', `${site}/how-we-work`],
+  ['nav_projects', `${site}/projects`],
+  ['nav_insights', `${site}/insights`],
+] as const;
+---
+<a class="skip" href="#check">{t(lang, 'skip')}</a>
+<div class="proto-bar" role="note">
+  <div class="wrap">
+    <span class="proto-label">{t(lang, 'proto')}</span>
+    <p>{t(lang, 'bar_note')}</p>
+  </div>
+</div>
+<header class="nav dark">
+  <div class="wrap">
+    <a class="wordmark" href={`${site}/`} aria-label="Hashinclude"><b>#</b>include</a>
+    <nav aria-label="Hashinclude">
+      <ul class="nav-links">
+        {links.map(([k, href]) => (
+          <li class="nav-site"><a href={href}>{t(lang, k)}</a></li>
+        ))}
+        <li>
+          <a class="nav-lang" href={`${base}/${other}/readiness/`} lang={other} hreflang={other}
+             data-lang-switch={other}>{t(lang, 'lang_switch')}</a>
+        </li>
+        <li><button type="button" class="nav-cta" data-open-note aria-haspopup="dialog">{t(lang, 'note_btn')} <span aria-hidden="true">{lang === 'ar' ? '←' : '→'}</span></button></li>
+      </ul>
+    </nav>
+  </div>
+</header>

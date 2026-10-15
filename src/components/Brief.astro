@@ -1,0 +1,64 @@
+---
+// The readiness brief: gaps, first workflow, delivery phases, lead summary and the four scopes.
+import { t } from '../content/i18n';
+import { SOURCE_URL, type Lang } from '../content/data';
+import { handoffText, type Result, type State } from '../lib/scoring';
+import { emphasise, briefEyebrow, gapsBlock, workflowBlock, phasesMeta, phasesBlock, ladderRows } from '../lib/render';
+
+interface Props { lang: Lang; state: State; result: Result }
+const { lang, state, result } = Astro.props;
+const src = lang === 'ar' ? SOURCE_URL.replace('/en/', '/ar/') : SOURCE_URL;
+---
+<section class="sec sec--alt" id="brief" aria-labelledby="brief-h">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="tag" id="brief-eyebrow" set:html={briefEyebrow(state, lang)} />
+      <h2 class="h2" id="brief-h" set:html={emphasise(t(lang, 'brief_title'))} />
+    </div>
+    <div class="brief-grid">
+      <article class="card" aria-labelledby="gaps-h">
+        <h3 id="gaps-h">{t(lang, 'gaps_h')}</h3>
+        <div id="gaps" set:html={gapsBlock(result, lang)} />
+      </article>
+      <article class="card" aria-labelledby="wf-h">
+        <h3 id="wf-h">{t(lang, 'wf_h')}</h3>
+        <div id="wf-card" class="card-body" set:html={workflowBlock(state, result, lang)} />
+      </article>
+      <article class="card card--wide" aria-labelledby="phases-h">
+        <div class="card-head">
+          <h3 id="phases-h">{t(lang, 'phases_h')}</h3>
+          <span class="tag" id="phases-meta" set:html={phasesMeta(result, lang)} />
+        </div>
+        <ol class="steps" id="phases" set:html={phasesBlock(result, lang)} />
+        <p class="fine">{t(lang, 'phases_note')}</p>
+      </article>
+      <article class="card" aria-labelledby="handoff-h">
+        <h3 id="handoff-h">{t(lang, 'handoff_h')}</h3>
+        <p>{t(lang, 'handoff_d')}</p>
+        <div class="terminal">
+          <div class="term-bar" aria-hidden="true"><i></i><i></i><i></i><span>lead_summary.txt</span></div>
+          <p class="handoff-cmd" aria-hidden="true">$ cat lead_summary.txt</p>
+          <pre class="handoff" id="handoff" dir="auto" tabindex="0" aria-labelledby="handoff-h">{handoffText(state, result, lang)}</pre>
+        </div>
+        <div class="actions">
+          <button type="button" class="btn btn--line btn--sm" id="btn-copy">{t(lang, 'copy')}</button>
+          <button type="button" class="btn btn--primary btn--sm" id="btn-book">{t(lang, 'book')}</button>
+        </div>
+        <p class="fine status" id="copy-msg" role="status"></p>
+      </article>
+      <article class="card" aria-labelledby="ladder-h">
+        <h3 id="ladder-h">{t(lang, 'ladder_h')}</h3>
+        <div class="table-scroll" tabindex="0" role="region" aria-labelledby="ladder-h">
+          <table>
+            <thead><tr>
+              <th scope="col">{t(lang, 'th_scope')}</th><th scope="col">{t(lang, 'th_covers')}</th>
+              <th scope="col">{t(lang, 'th_time')}</th><th scope="col">{t(lang, 'th_inv')}</th>
+            </tr></thead>
+            <tbody id="ladder" set:html={ladderRows(result, lang)} />
+          </table>
+        </div>
+        <p class="fine">{t(lang, 'ladder_note')} <a href={src} rel="noopener" target="_blank">{t(lang, 'ladder_src')}</a>.</p>
+      </article>
+    </div>
+  </div>
+</section>

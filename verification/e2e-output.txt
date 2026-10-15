@@ -1,0 +1,60 @@
+PASS  en@360: no horizontal scroll (scrollWidth 360)
+PASS  en@360: no console errors 
+PASS  en@390: no horizontal scroll (scrollWidth 390)
+PASS  en@390: no console errors 
+PASS  en@768: no horizontal scroll (scrollWidth 768)
+PASS  en@768: no console errors 
+PASS  en@1280: no horizontal scroll (scrollWidth 1280)
+PASS  en@1280: no console errors 
+PASS  en@1440: no horizontal scroll (scrollWidth 1440)
+PASS  en@1440: no console errors 
+PASS  ar@360: no horizontal scroll (scrollWidth 360)
+PASS  ar@360: no console errors 
+PASS  ar@390: no horizontal scroll (scrollWidth 390)
+PASS  ar@390: no console errors 
+PASS  ar@768: no horizontal scroll (scrollWidth 768)
+PASS  ar@768: no console errors 
+PASS  ar@1280: no horizontal scroll (scrollWidth 1280)
+PASS  ar@1280: no console errors 
+PASS  ar@1440: no horizontal scroll (scrollWidth 1440)
+PASS  ar@1440: no console errors 
+PASS  example: score 52
+PASS  example: band
+PASS  example: Compact tier
+PASS  example: ROI stats (hours_returned1,440Hours returned / year annual_value_aed100,800Value / year (AED) fte_freed0.8Full-time roles freed payback_months7–11Payback (months))
+PASS  example: priority B in summary
+PASS  example: four gaps
+PASS  example: hero terminal
+PASS  noindex meta present
+PASS  prototype disclosure visible
+PASS  disclosure stays visible after scroll
+PASS  clear: score resets to —
+PASS  clear: notice switches to own answers
+PASS  clear: ROI asks for numbers
+PASS  live: all 3s give 100
+PASS  live: air-gapped data gives Sovereign
+PASS  clicking a workflow tile selects it
+PASS  workflow sets its default share (60%)
+PASS  live: open-ended payback shows "from"
+PASS  company name is escaped, not rendered as HTML
+PASS  AR page is RTL
+PASS  language switch carries the answers
+PASS  language switch carries the company name
+PASS  AR tier name
+PASS  #ar opens the Arabic page
+PASS  AR payback written in words
+PASS  AR investment written in words
+PASS  root remembers Arabic (localStorage)
+PASS  #note opens the builder's note
+PASS  Esc closes the note
+PASS  button opens the note
+PASS  focus is trapped in the note
+PASS  backdrop click closes the note
+PASS  first Tab reaches the skip link
+PASS  arrow keys change a question answer
+PASS  keyboard answer updates the score (12/21 → 57)
+PASS  book shows prototype note
+PASS  mobile result bar visible at 390px
+PASS  mobile bar shows the score
+
+ALL CHECKS PASSED

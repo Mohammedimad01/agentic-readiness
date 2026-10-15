@@ -1,0 +1,965 @@
+<title>Agentic AI Readiness Check</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout: an engineer's spec sheet — questionnaire on the left, live readout pinned on the right, full brief below */
+:root{
+  --bg:#ECEFF3; --surface:#FFFFFF; --surface-2:#F4F6F9; --ink:#101924; --muted:#566373; --line:#D2D9E2;
+  --accent:#A3550E; --accent-ink:#FFFFFF; --accent-soft:#F7E8D7;
+  --good:#1D7448; --good-soft:#DCEFE3; --warn:#8F5E00; --warn-soft:#F6EACF; --crit:#B0271F; --crit-soft:#F7DFDC;
+  --f-display:"Archivo","IBM Plex Sans Arabic",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans","IBM Plex Sans Arabic",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0A1017; --surface:#111A24; --surface-2:#17222E; --ink:#E5EAF0; --muted:#8C99A9; --line:#243244;
+    --accent:#E4A15A; --accent-ink:#1B1207; --accent-soft:#33261A;
+    --good:#5EC291; --good-soft:#15301F; --warn:#E2B04E; --warn-soft:#33280F; --crit:#F0837A; --crit-soft:#3A1A18;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0A1017; --surface:#111A24; --surface-2:#17222E; --ink:#E5EAF0; --muted:#8C99A9; --line:#243244;
+  --accent:#E4A15A; --accent-ink:#1B1207; --accent-soft:#33261A;
+  --good:#5EC291; --good-soft:#15301F; --warn:#E2B04E; --warn-soft:#33280F; --crit:#F0837A; --crit-soft:#3A1A18;
+  color-scheme:dark;
+}
+html[dir="rtl"]{
+  --f-display:"IBM Plex Sans Arabic","Archivo",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans Arabic","IBM Plex Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+html[dir="rtl"] body{line-height:1.7}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1200px;margin-inline:auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.mono-label{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+html[dir="rtl"] .mono-label{font-family:var(--f-body);letter-spacing:0;text-transform:none;font-size:12.5px;font-weight:600}
+
+/* top bar */
+.topbar{background:var(--surface);border-bottom:1px solid var(--line)}
+.topbar-in{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding-block:10px}
+.topbar p{margin:0;font-size:13px;color:var(--muted);min-width:0;flex:1 1 320px}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--line);border-radius:4px;padding:1px 6px;margin-inline-end:6px;color:var(--ink)}
+html[dir="rtl"] .tag{font-family:var(--f-body);letter-spacing:0;font-size:11.5px}
+.top-actions{display:flex;flex-wrap:wrap;gap:8px}
+
+/* buttons */
+.btn{font:inherit;font-size:13.5px;font-weight:600;line-height:1.2;border-radius:8px;padding:9px 14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;transition:border-color .15s}
+.btn:hover{border-color:var(--muted)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.outline{border-color:var(--accent);color:var(--accent);background:transparent}
+.btn.ghost{background:transparent}
+
+/* hero */
+.hero{padding-block:44px 26px;display:grid;gap:14px}
+.eyebrow{margin:0;font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+html[dir="rtl"] .eyebrow{font-family:var(--f-body);letter-spacing:0;text-transform:none;font-size:13.5px;font-weight:600}
+h1{margin:0;font-family:var(--f-display);font-stretch:78%;font-weight:800;font-size:clamp(38px,6.4vw,72px);line-height:.97;letter-spacing:-.015em;max-width:14ch;text-wrap:balance}
+html[dir="rtl"] h1{font-weight:700;line-height:1.22;letter-spacing:0;font-size:clamp(32px,5vw,56px)}
+.lede{margin:0;font-size:17.5px;color:var(--muted);max-width:60ch}
+.specs{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.specs li{font-family:var(--f-mono);font-size:12px;padding:4px 11px;border:1px solid var(--line);border-radius:999px;background:var(--surface)}
+html[dir="rtl"] .specs li{font-family:var(--f-body);font-size:13px}
+
+/* notice */
+.notice{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:12px 16px;border:1px solid var(--line);border-radius:10px;background:var(--surface-2);margin-bottom:26px}
+.notice.ex{background:var(--accent-soft);border-color:transparent}
+.notice p{margin:0;font-size:14px;min-width:0;flex:1 1 300px}
+.notice-actions{display:flex;flex-wrap:wrap;gap:8px}
+
+/* layout */
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);gap:32px;align-items:start}
+@media (max-width:960px){.layout{grid-template-columns:minmax(0,1fr)}}
+.form{display:grid;gap:44px;min-width:0}
+.part{display:grid;gap:14px}
+.part-head{display:grid;gap:4px;margin-bottom:2px}
+.part-no{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
+h2{margin:0;font-family:var(--f-display);font-stretch:84%;font-weight:750;font-size:28px;line-height:1.1;text-wrap:balance}
+html[dir="rtl"] h2{font-weight:700;line-height:1.4}
+.part-sub{margin:0;color:var(--muted);font-size:14px}
+.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px}
+.span2{grid-column:1/-1}
+@media (max-width:560px){.fields{grid-template-columns:minmax(0,1fr);padding:16px}}
+.field{display:grid;gap:6px;min-width:0;align-content:start}
+.field label{font-size:13.5px;font-weight:600}
+.hint{margin:0;font-size:12.5px;color:var(--muted)}
+input[type="text"],input[type="number"],select{font:inherit;font-size:15px;color:var(--ink);background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%;min-width:0}
+input[type="number"]{font-variant-numeric:tabular-nums}
+input[type="range"]{width:100%;accent-color:var(--accent)}
+.range-row{display:flex;align-items:center;gap:14px}
+.range-out{font-family:var(--f-mono);font-size:15px;font-weight:500;min-width:4ch;text-align:end;font-variant-numeric:tabular-nums}
+.calc-note{margin:0;font-size:12.5px;color:var(--muted)}
+
+/* question cards */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:20px;display:grid;gap:12px}
+@media (max-width:560px){.q{padding:16px}}
+.q-head{display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;align-items:baseline}
+.q-no{font-family:var(--f-mono);font-size:13px;font-weight:500;color:var(--accent)}
+.q h3{margin:0;font-family:var(--f-display);font-stretch:90%;font-weight:700;font-size:19px;line-height:1.25;text-wrap:balance}
+html[dir="rtl"] .q h3{font-weight:600;line-height:1.55}
+.q .why{grid-column:2;margin:0;font-size:13.5px;color:var(--muted)}
+.opts{display:grid;gap:6px;margin:0;padding:0;border:0;min-width:0}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:1px solid var(--line);border-radius:8px;cursor:pointer;font-size:14.5px;background:var(--surface);transition:border-color .15s,background-color .15s}
+.opt:hover{border-color:var(--muted)}
+.opt.on{border-color:var(--accent);background:var(--accent-soft)}
+.opt input{accent-color:var(--accent);margin:4px 0 0;flex:none}
+.wf-pick{border-top:1px dashed var(--line);padding-top:14px;display:grid;gap:10px}
+.wf-pick .lbl{font-size:13.5px;font-weight:600;margin:0}
+.wf-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media (max-width:560px){.wf-grid{grid-template-columns:minmax(0,1fr)}}
+.opt.wf span{display:grid;gap:2px;min-width:0}
+.opt.wf b{font-weight:600}
+.opt.wf small{color:var(--muted);font-size:12.5px;line-height:1.45}
+
+/* result panel */
+.panel{position:sticky;top:calc(env(safe-area-inset-top, 0px) + 16px);background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;display:grid;gap:16px;min-width:0;scroll-margin-top:16px}
+@media (max-width:960px){.panel{position:static}}
+.panel-head{display:flex;justify-content:space-between;gap:8px}
+.score-row{display:flex;gap:16px;align-items:center}
+.ring{width:112px;height:112px;flex:none;direction:ltr}
+.ring-bg{fill:none;stroke:var(--line);stroke-width:10}
+.ring-fg{fill:none;stroke:var(--muted);stroke-width:10;stroke-linecap:round;transition:stroke-dasharray .5s ease}
+.ring.good .ring-fg{stroke:var(--good)} .ring.warn .ring-fg{stroke:var(--warn)} .ring.crit .ring-fg{stroke:var(--crit)}
+.ring-num{font-family:var(--f-display);font-size:36px;font-weight:800;fill:var(--ink);font-variant-numeric:tabular-nums}
+.ring-sub{font-family:var(--f-mono);font-size:11px;fill:var(--muted)}
+.score-text{display:grid;gap:6px;min-width:0}
+.score-text p{margin:0;font-size:13.5px;color:var(--muted)}
+.pill{justify-self:start;display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:12.5px;font-weight:600;background:var(--surface-2);color:var(--ink)}
+.pill.good{background:var(--good-soft);color:var(--good)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.crit{background:var(--crit-soft);color:var(--crit)}
+.pill.acc{background:var(--accent);color:var(--accent-ink);font-size:11px;padding:2px 8px;margin-inline-start:6px;vertical-align:middle}
+.radar{margin:0;display:grid;gap:4px;border-top:1px solid var(--line);padding-top:14px}
+.radar svg{width:100%;max-width:330px;height:auto;display:block;margin-inline:auto;direction:ltr}
+.radar figcaption{font-size:12px;color:var(--muted);text-align:center}
+.rg{fill:none;stroke:var(--line);stroke-width:1}
+.rax{stroke:var(--line);stroke-width:1}
+.rdata{fill:var(--accent);fill-opacity:.16;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
+.rdot{fill:var(--accent)}
+.rlab{fill:var(--muted);font-family:var(--f-body);font-size:10.5px;font-weight:500}
+.rlab.low{fill:var(--crit);font-weight:700}
+.tier{border-top:1px solid var(--line);padding-top:14px;display:grid;gap:8px}
+.tier-name{font-family:var(--f-display);font-stretch:82%;font-weight:800;font-size:32px;line-height:1}
+html[dir="rtl"] .tier-name{font-weight:700;line-height:1.3;font-size:28px}
+.tier-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0}
+.tier-meta div{background:var(--surface-2);border-radius:8px;padding:8px 10px;min-width:0}
+.tier-meta dt{font-size:11.5px;color:var(--muted)}
+.tier-meta dd{margin:0;font-family:var(--f-mono);font-weight:500;font-size:14px;font-variant-numeric:tabular-nums}
+html[dir="rtl"] .tier-meta dd{font-family:var(--f-body);font-weight:600}
+.reasons{margin:0;padding-inline-start:18px;font-size:13px;color:var(--muted);display:grid;gap:3px}
+.roi{border-top:1px solid var(--line);padding-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:14px 12px}
+.stat{display:grid;gap:2px;min-width:0}
+.stat span{font-size:12px;color:var(--muted)}
+.stat b{font-family:var(--f-display);font-stretch:88%;font-weight:750;font-size:25px;line-height:1.1;font-variant-numeric:tabular-nums}
+.roi .muted{grid-column:1/-1;font-size:13px}
+.warnbox{font-size:13px;background:var(--warn-soft);color:var(--ink);border-radius:8px;padding:10px 12px;margin:0}
+.to-brief{font-weight:600;font-size:14px;text-decoration:none}
+.to-brief:hover{text-decoration:underline}
+
+/* brief */
+.brief{padding-block:64px 24px;display:grid;gap:20px;scroll-margin-top:8px}
+.brief-head{display:grid;gap:6px}
+.brief h2{font-size:clamp(28px,4vw,42px)}
+.brief-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:820px){.brief-grid{grid-template-columns:minmax(0,1fr)}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;display:grid;gap:12px;align-content:start;min-width:0}
+@media (max-width:560px){.card{padding:16px}}
+.card.wide{grid-column:1/-1}
+.card h3{margin:0;font-family:var(--f-display);font-stretch:90%;font-weight:700;font-size:20px;line-height:1.25}
+html[dir="rtl"] .card h3{font-weight:600}
+.card p{margin:0}
+.card-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:6px 12px}
+.muted{color:var(--muted);margin:0}
+.gaps{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.gaps li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:12px;align-items:start}
+.gaps p{margin:2px 0 0;font-size:14px;color:var(--muted)}
+.chip{font-family:var(--f-mono);font-size:12px;font-weight:500;padding:3px 7px;border-radius:6px;font-variant-numeric:tabular-nums;direction:ltr}
+.chip.crit{background:var(--crit-soft);color:var(--crit)}
+.chip.warn{background:var(--warn-soft);color:var(--warn)}
+.wf-name{font-family:var(--f-display);font-stretch:82%;font-weight:800;font-size:28px;line-height:1.08}
+html[dir="rtl"] .wf-name{font-weight:700;line-height:1.35;font-size:24px}
+.proof{background:var(--surface-2);border-radius:8px;padding:12px 14px;display:grid;gap:4px}
+.proof p{font-size:14px}
+.mini{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:13.5px;color:var(--muted)}
+.mini b{color:var(--ink);font-variant-numeric:tabular-nums}
+.phases{list-style:none;margin:6px 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr))}
+.phases li{position:relative;display:grid;gap:4px;align-content:start;padding-block:16px 4px;padding-inline:0 16px;border-top:2px solid var(--line);min-width:0}
+.phases li::before{content:"";position:absolute;top:-6px;inset-inline-start:0;width:10px;height:10px;border-radius:50%;background:var(--accent)}
+.phases strong{font-size:14.5px;line-height:1.3}
+.phases p{font-size:13px;color:var(--muted)}
+@media (max-width:900px){
+  .phases{grid-template-columns:minmax(0,1fr)}
+  .phases li{border-top:0;border-inline-start:2px solid var(--line);padding-block:0 18px;padding-inline:18px 0}
+  .phases li::before{top:3px;inset-inline-start:-6px}
+}
+.fine{margin:0;font-size:12.5px;color:var(--muted)}
+.handoff{margin:0;font-family:var(--f-mono);font-size:12.5px;line-height:1.65;background:var(--surface-2);border:1px solid var(--line);border-radius:8px;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ink)}
+html[dir="rtl"] .handoff{font-family:var(--f-body);font-size:13.5px}
+.actions{display:flex;flex-wrap:wrap;gap:8px}
+.table-scroll{overflow-x:auto;margin-inline:-4px;padding-inline:4px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:13.5px}
+th,td{text-align:start;padding:10px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+thead th{font-size:11.5px;font-weight:600;color:var(--muted)}
+tbody th{font-weight:700;white-space:nowrap}
+td.num{font-family:var(--f-mono);white-space:nowrap;font-variant-numeric:tabular-nums}
+html[dir="rtl"] td.num{font-family:var(--f-body)}
+tr.rec{background:var(--accent-soft)}
+
+/* footer + mobile bar */
+.foot{margin-top:24px;padding-block:24px 40px;border-top:1px solid var(--line);display:grid;gap:4px;font-size:12.5px;color:var(--muted)}
+.foot p{margin:0}
+.mbar{display:none}
+@media (max-width:960px){
+  .foot{padding-bottom:110px}
+  .mbar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:20;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border-top:1px solid var(--line);padding-top:10px;padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px));padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));font-size:13.5px}
+  .mbar span{min-width:0}
+  .mbar b{font-family:var(--f-display);font-size:19px;font-variant-numeric:tabular-nums}
+  .mbar a{font-weight:600;text-decoration:none;white-space:nowrap}
+}
+
+/* builder's note */
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--ink);padding:0;width:min(700px, calc(100% - 32px));max-height:calc(100% - 48px)}
+dialog::backdrop{background:rgba(6,10,16,.55)}
+.note-in{padding:26px;display:grid;gap:12px}
+@media (max-width:560px){.note-in{padding:18px}}
+.note-head{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.icon-btn{font:inherit;font-size:24px;line-height:1;background:transparent;border:0;color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:6px}
+.icon-btn:hover{color:var(--ink)}
+dialog h2{font-size:28px}
+dialog h3{margin:10px 0 0;font-size:15px;font-weight:700}
+dialog p{margin:0}
+dialog ul{margin:0;padding-inline-start:20px;display:grid;gap:6px;font-size:14.5px}
+.days{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:14.5px}
+.days li{display:grid;grid-template-columns:78px minmax(0,1fr);gap:10px;align-items:baseline}
+.about{border-top:1px solid var(--line);padding-top:14px;margin-top:8px;display:grid;gap:5px}
+.about strong{font-size:16px}
+.about p{font-size:14px;color:var(--muted)}
+.contact{display:flex;flex-wrap:wrap;gap:4px 20px;font-family:var(--f-mono);font-size:13.5px;color:var(--ink)!important}
+@media (prefers-reduced-motion: reduce){*{transition:none!important} html{scroll-behavior:auto}}
+</style>
+
+<div id="app"></div>
+<dialog id="note" aria-labelledby="noteh"></dialog>
+
+<script>
+(function(){
+"use strict";
+const $ = s => document.querySelector(s);
+let lang = 'en';
+try { const s = localStorage.getItem('arc-lang'); if (s === 'ar' || s === 'en') lang = s; } catch (_) {}
+if (location.hash === '#ar') lang = 'ar';
+if (location.hash === '#en') lang = 'en';
+
+/* ---------- content ---------- */
+const SECTORS = [
+  {id:'retail', en:'E-commerce & retail', ar:'التجارة الإلكترونية والتجزئة'},
+  {id:'logistics', en:'Logistics & distribution', ar:'الخدمات اللوجستية والتوزيع'},
+  {id:'professional', en:'Professional services', ar:'الخدمات المهنية'},
+  {id:'fnb', en:'F&B & hospitality', ar:'الأغذية والمشروبات والضيافة'},
+  {id:'health', en:'Healthcare clinics', ar:'العيادات الطبية'},
+  {id:'construction', en:'Construction', ar:'المقاولات والإنشاءات'},
+  {id:'manufacturing', en:'Manufacturing', ar:'التصنيع'},
+  {id:'trading', en:'Trading', ar:'التجارة العامة'},
+  {id:'insurance', en:'Insurance & financial services', ar:'التأمين والخدمات المالية'},
+  {id:'gov', en:'Government or regulated entity', ar:'جهة حكومية أو خاضعة للتنظيم'}
+];
+const SIZES = [
+  {id:'s5', en:'5–20 people', ar:'من 5 إلى 20 موظفاً'},
+  {id:'s21', en:'21–50 people', ar:'من 21 إلى 50 موظفاً'},
+  {id:'s51', en:'51–200 people', ar:'من 51 إلى 200 موظف'},
+  {id:'s201', en:'201–1,000 people', ar:'من 201 إلى 1,000 موظف'},
+  {id:'s1000', en:'More than 1,000 people', ar:'أكثر من 1,000 موظف'}
+];
+const WFCOUNT = [
+  {id:'1', en:'One', ar:'واحد'},
+  {id:'2-3', en:'Two or three', ar:'اثنان أو ثلاثة'},
+  {id:'4+', en:'Four or more', ar:'أربعة أو أكثر'}
+];
+const SYSTEMS = [
+  {id:'1', en:'One', ar:'نظام واحد'},
+  {id:'2-3', en:'Two or three', ar:'نظامان أو ثلاثة'},
+  {id:'4-6', en:'Four to six', ar:'من أربعة إلى ستة'},
+  {id:'7+', en:'Seven or more', ar:'سبعة أو أكثر'}
+];
+
+const QUESTIONS = [
+  {id:'q1',
+   short:{en:'Workflow definition', ar:'تحديد سير العمل'}, axis:{en:'Workflow', ar:'سير العمل'},
+   title:{en:'What workflow should the agent take over?', ar:'ما سير العمل الذي سيتولاه الوكيل؟'},
+   why:{en:'If you cannot describe it in plain language, the agent will fail to automate it.', ar:'إن لم تستطع وصفه بلغة بسيطة، فلن يتمكن الوكيل من أتمتته.'},
+   opts:[
+    {id:'a', s:0, en:"We want AI but haven't picked a process", ar:'نريد الذكاء الاصطناعي لكن لم نحدد عملية بعد'},
+    {id:'b', s:1, en:'A few ideas, nothing written down', ar:'لدينا أفكار، ولا شيء مكتوب'},
+    {id:'c', s:2, en:'One clear process, roughly described', ar:'عملية واحدة واضحة، موصوفة بشكل عام'},
+    {id:'d', s:3, en:'One process with inputs, steps and a success measure on paper', ar:'عملية واحدة بمدخلاتها وخطواتها ومقياس نجاحها، مكتوبة'}
+   ]},
+  {id:'q2',
+   short:{en:'Knowledge sources', ar:'مصادر المعرفة'}, axis:{en:'Knowledge', ar:'المعرفة'},
+   title:{en:'What does the agent need to read, and where is it?', ar:'ما الذي يحتاج الوكيل إلى قراءته، وأين يوجد؟'},
+   why:{en:'Retrieval over your own documents is what grounds the agent in your reality.', ar:'الاسترجاع من مستنداتكم هو ما يربط الوكيل بواقع عملكم.'},
+   opts:[
+    {id:'a', s:0, en:"Mostly in people's heads", ar:'معظمها في أذهان الموظفين'},
+    {id:'b', s:1, en:'Scattered across email, WhatsApp and personal drives', ar:'متفرقة بين البريد وواتساب والأجهزة الشخصية'},
+    {id:'c', s:2, en:'In shared folders, mostly up to date', ar:'في مجلدات مشتركة، ومحدّثة في الغالب'},
+    {id:'d', s:3, en:'Organised in one place, with an owner who keeps it current', ar:'منظمة في مكان واحد، ولها مسؤول يحدّثها'}
+   ]},
+  {id:'q3',
+   short:{en:'System connections', ar:'ربط الأنظمة'}, axis:{en:'Systems', ar:'الأنظمة'},
+   title:{en:'How do the systems it must act on connect today?', ar:'كيف ترتبط الأنظمة التي سيعمل عليها الوكيل حالياً؟'},
+   why:{en:'Each integration has a cost. The number and quality of integrations defines half the project.', ar:'لكل تكامل تكلفته. عدد التكاملات وجودتها يحددان نصف المشروع.'},
+   opts:[
+    {id:'a', s:0, en:'Paper and spreadsheets, mostly', ar:'الورق وجداول البيانات في الغالب'},
+    {id:'b', s:1, en:'Cloud apps, none of them connected', ar:'تطبيقات سحابية غير مترابطة'},
+    {id:'c', s:2, en:'Our main apps have APIs or exports we already use', ar:'تطبيقاتنا الرئيسية لديها واجهات برمجية أو تصدير نستخدمه'},
+    {id:'d', s:3, en:'An integrated ERP or CRM with documented APIs', ar:'نظام موارد أو إدارة عملاء متكامل بواجهات موثقة'}
+   ]},
+  {id:'q4',
+   short:{en:'Human checkpoints', ar:'نقاط المراجعة البشرية'}, axis:{en:'Checkpoints', ar:'المراجعة'},
+   title:{en:'Where does a person stay in the loop?', ar:'أين يبقى القرار بيد الإنسان؟'},
+   why:{en:'Without explicit checkpoints you have a system you cannot defend in an audit or to a regulator.', ar:'بدون نقاط مراجعة واضحة، يصبح لديك نظام لا يمكنك الدفاع عنه أمام مدقق أو جهة رقابية.'},
+   opts:[
+    {id:'a', s:0, en:"We haven't thought about it", ar:'لم نفكر في ذلك بعد'},
+    {id:'b', s:1, en:'A manager would check things informally', ar:'سيراجع أحد المديرين الأمور بشكل غير رسمي'},
+    {id:'c', s:2, en:'We know which steps need approval', ar:'نعرف الخطوات التي تحتاج إلى اعتماد'},
+    {id:'d', s:3, en:'Approval rules and limits are written down and owned', ar:'قواعد الاعتماد وحدوده مكتوبة ولها مسؤول'}
+   ]},
+  {id:'q5',
+   short:{en:'Data residency', ar:'موقع البيانات'}, axis:{en:'Data', ar:'البيانات'},
+   title:{en:'Where must the data live?', ar:'أين يجب أن تُحفظ البيانات؟'},
+   why:{en:'Cloud, in-country, on-premise and air-gapped each change cost, capability and compliance. Decide before choosing tools.', ar:'لكل خيار، من السحابة إلى داخل الدولة إلى الخوادم المحلية أو البيئة المعزولة، أثرٌ على التكلفة والإمكانات والامتثال. قرّر قبل اختيار الأدوات.'},
+   opts:[
+    {id:'unchecked', s:0, en:"We haven't checked", ar:'لم نتحقق بعد'},
+    {id:'personal', s:1, en:'We hold personal data and the rules are unclear', ar:'نحتفظ ببيانات شخصية والمتطلبات غير واضحة'},
+    {id:'cloud', s:3, en:'Cloud is fine for us', ar:'السحابة مناسبة لنا'},
+    {id:'uae', s:3, en:'It must stay in the UAE', ar:'يجب أن تبقى داخل الإمارات'},
+    {id:'airgap', s:3, en:'On-premise or air-gapped', ar:'خوادم محلية أو بيئة معزولة'}
+   ]},
+  {id:'q6',
+   short:{en:'Ownership after launch', ar:'الملكية بعد الإطلاق'}, axis:{en:'Ownership', ar:'الملكية'},
+   title:{en:'Who owns the system after it goes live?', ar:'من يتولى النظام بعد إطلاقه؟'},
+   why:{en:'Agentic systems need ongoing operation: drift monitoring, prompt refinement and knowledge updates.', ar:'تحتاج الأنظمة الوكيلة إلى تشغيل مستمر: مراقبة الانحراف، وتحسين التعليمات، وتحديث المعرفة.'},
+   opts:[
+    {id:'a', s:0, en:'We expect it to run itself', ar:'نتوقع أن يعمل من تلقاء نفسه'},
+    {id:'b', s:1, en:'Our IT person would look after it', ar:'سيتولاه مسؤول تقنية المعلومات لدينا'},
+    {id:'c', s:2, en:'A named owner, with vendor support', ar:'مسؤول محدد بالاسم، بدعم من المورّد'},
+    {id:'d', s:3, en:'A stewardship agreement covering monitoring and updates', ar:'اتفاقية رعاية تشمل المراقبة والتحديثات'}
+   ]},
+  {id:'q7',
+   short:{en:'Failure handling', ar:'معالجة الأخطاء'}, axis:{en:'Failure', ar:'الأخطاء'},
+   title:{en:'When the agent gets it wrong, what happens?', ar:'عندما يخطئ الوكيل، ماذا يحدث؟'},
+   why:{en:'Every agent will be wrong sometimes. What matters is who detects it and how it is corrected.', ar:'كل وكيل سيخطئ أحياناً. المهم هو من يكتشف الخطأ وكيف يُصحَّح.'},
+   opts:[
+    {id:'a', s:0, en:'A customer would tell us', ar:'سيخبرنا أحد العملاء'},
+    {id:'b', s:1, en:'Someone would probably notice', ar:'على الأرجح سيلاحظ أحدهم'},
+    {id:'c', s:2, en:"We'd review a sample of outputs", ar:'سنراجع عينة من المخرجات'},
+    {id:'d', s:3, en:'Every action is logged, reviewed and correctable', ar:'كل إجراء مُسجّل ومُراجَع وقابل للتصحيح'}
+   ]}
+];
+
+const GAPFIX = {
+  q1:{en:'Write the workflow on one page: what starts it, the inputs, the steps, who does each one, and what "done" looks like.', ar:'اكتب سير العمل في صفحة واحدة: ما الذي يبدأه، والمدخلات، والخطوات، ومن ينفذ كل خطوة، وما معنى الإنجاز.'},
+  q2:{en:'Gather the documents the agent must read (policies, price lists, contracts, past cases) into one place and name an owner who keeps them current.', ar:'اجمع المستندات التي سيقرأها الوكيل، من سياسات وقوائم أسعار وعقود وحالات سابقة، في مكان واحد، وعيّن مسؤولاً عن تحديثها.'},
+  q3:{en:'List every system the workflow touches and how data moves in and out today: API, export or manual entry.', ar:'اذكر كل نظام يمر به سير العمل وكيف تدخل البيانات وتخرج منه اليوم: واجهة برمجية أو تصدير أو إدخال يدوي.'},
+  q4:{en:'Mark each step as runs automatically, needs approval, or never automated, and name the approver for each.', ar:'صنّف كل خطوة: تعمل تلقائياً، أو تحتاج إلى اعتماد، أو لا تُؤتمت أبداً، وحدّد اسم المعتمِد لكل منها.'},
+  q5:{en:'Check whether the workflow touches personal data and what the UAE Personal Data Protection Law (Federal Decree-Law No. 45 of 2021) requires, before choosing tools.', ar:'تحقق مما إذا كان سير العمل يتضمن بيانات شخصية، وما يتطلبه قانون حماية البيانات الشخصية الإماراتي (المرسوم بقانون اتحادي رقم 45 لسنة 2021)، قبل اختيار الأدوات.'},
+  q6:{en:'Name who runs the agent after launch: monitoring drift, refining prompts and updating the knowledge base. Agree stewardship before delivery.', ar:'حدّد من يتولى الوكيل بعد الإطلاق: مراقبة الانحراف، وتحسين التعليمات، وتحديث قاعدة المعرفة. اتفق على الرعاية قبل التسليم.'},
+  q7:{en:'Decide who detects a wrong output, how it gets corrected, and where every action is logged. The audit trail is non-negotiable in production.', ar:'حدّد من يكتشف المخرجات الخاطئة، وكيف تُصحَّح، وأين يُسجَّل كل إجراء. سجل التدقيق شرط أساسي لأي نظام إنتاجي.'}
+};
+
+const WORKFLOWS = [
+  {id:'docs', share:50,
+   name:{en:'Document processing', ar:'معالجة المستندات'},
+   desc:{en:'Read invoices, claims, permits or delivery notes, extract and validate the data, and queue it for approval.', ar:'قراءة الفواتير أو المطالبات أو التصاريح أو إشعارات التسليم، واستخراج البيانات والتحقق منها، ثم إحالتها للاعتماد.'},
+   proof:{en:'Enterprise insurance quoting engine: document intelligence combined with deterministic rule engines, 127 API endpoints, v1 in production in about three weeks.', ar:'محرك تسعير تأمين مؤسسي: ذكاء المستندات مع محركات قواعد حتمية، 127 واجهة برمجية، والإصدار الأول في الإنتاج خلال نحو ثلاثة أسابيع.'}},
+  {id:'triage', share:45,
+   name:{en:'Customer & WhatsApp triage', ar:'فرز استفسارات العملاء عبر واتساب'},
+   desc:{en:'Answer routine questions in Arabic and English, and route the rest with full context.', ar:'الرد على الأسئلة المتكررة بالعربية والإنجليزية، وتحويل البقية مع السياق الكامل.'},
+   proof:{en:'Bilingual Arabic and English agents that handle intake, qualification and structured output across chat and voice.', ar:'وكلاء ثنائيو اللغة بالعربية والإنجليزية يتولون الاستقبال والتأهيل وإعداد المخرجات المنظمة عبر المحادثة والصوت.'}},
+  {id:'leads', share:40,
+   name:{en:'Lead qualification', ar:'تأهيل العملاء المحتملين'},
+   desc:{en:'Qualify inbound enquiries, score intent and draft a proposal for review.', ar:'تأهيل الاستفسارات الواردة، وتقييم جدية العميل، وإعداد مسودة عرض للمراجعة.'},
+   proof:{en:"Hashinclude's own sales agent takes a conversation from first contact to a branded, structured proposal.", ar:'وكيل المبيعات الخاص بـHashinclude ينقل المحادثة من أول تواصل إلى عرض منظم يحمل علامتها.'}},
+  {id:'knowledge', share:35,
+   name:{en:'Internal knowledge Q&A', ar:'مساعد المعرفة الداخلية'},
+   desc:{en:'Staff ask in plain language and get answers from your own policies and past cases, with sources.', ar:'يسأل الموظفون بلغة بسيطة ويحصلون على إجابات من سياساتكم وحالاتكم السابقة، مع ذكر المصدر.'},
+   proof:{en:'Agentic AI and RAG built for regulated environments where every decision must be traceable.', ar:'ذكاء اصطناعي وكيل مع استرجاع معزّز، مصمم للبيئات الخاضعة للتنظيم حيث يجب تتبع كل قرار.'}},
+  {id:'reporting', share:60,
+   name:{en:'Reporting & analytics', ar:'التقارير والتحليلات'},
+   desc:{en:'The weekly report that takes all day, pulled, reconciled and drafted automatically.', ar:'التقرير الأسبوعي الذي يستغرق يوماً كاملاً، يُجمع ويُطابق ويُصاغ تلقائياً.'},
+   proof:{en:'NAPCO National, KSA: 40% higher supervisory efficiency and a 25% sales lift within six months, through automated monitoring and analytics.', ar:'نابكو الوطنية في السعودية: كفاءة إشرافية أعلى بنسبة 40% وزيادة في المبيعات بنسبة 25% خلال ستة أشهر، عبر المراقبة والتحليلات الآلية.'}},
+  {id:'inventory', share:40,
+   name:{en:'Inventory & reorder decisions', ar:'قرارات المخزون وإعادة الطلب'},
+   desc:{en:'Forecast demand and propose transfers and reorders within agreed limits.', ar:'توقّع الطلب واقتراح التحويلات وإعادة الطلب ضمن الحدود المعتمدة.'},
+   proof:{en:'Inventory Decision Intelligence System for retail and distribution clients, delivered in 2024.', ar:'نظام ذكاء قرارات المخزون لعملاء التجزئة والتوزيع، سُلّم في 2024.'}}
+];
+
+const TIERS = [
+  {id:'compact', name:{en:'Compact', ar:'المُصغّر'},
+   desc:{en:'One agentic workflow, one integration, RAG over your existing documents. Cloud-hosted. Suited to SMEs automating a real business process.', ar:'سير عمل وكيل واحد، وتكامل واحد، واسترجاع معزّز من مستنداتكم الحالية. استضافة سحابية. مناسب للشركات الصغيرة والمتوسطة التي تؤتمت عملية فعلية.'},
+   time:{en:'6 weeks', ar:'6 أسابيع'}, inv:{en:'AED 60K–90K', ar:'من 60 إلى 90 ألف درهم'}, lo:60000, hi:90000},
+  {id:'standard', name:{en:'Standard', ar:'القياسي'},
+   desc:{en:'Multiple workflows and integrations for the mid-market. Includes basic governance, monitoring and a first-year stewardship retainer.', ar:'عدة سير عمل وعدة تكاملات للشركات المتوسطة. يشمل حوكمة أساسية ومراقبة واتفاقية رعاية للسنة الأولى.'},
+   time:{en:'8–12 weeks', ar:'من 8 إلى 12 أسبوعاً'}, inv:{en:'AED 150K–350K', ar:'من 150 إلى 350 ألف درهم'}, lo:150000, hi:350000},
+  {id:'platform', name:{en:'Platform', ar:'المنصة'},
+   desc:{en:'Enterprise-grade. Custom architecture, full integration surface, audit trail and ongoing operation, reliable for thousands of users.', ar:'على مستوى المؤسسات. بنية مخصصة، وتكامل شامل، وسجل تدقيق، وتشغيل مستمر، بموثوقية تخدم آلاف المستخدمين.'},
+   time:{en:'12–20 weeks', ar:'من 12 إلى 20 أسبوعاً'}, inv:{en:'AED 500K–1M+', ar:'من 500 ألف إلى مليون درهم فأكثر'}, lo:500000, hi:null},
+  {id:'sovereign', name:{en:'Sovereign', ar:'السيادي'},
+   desc:{en:'Government and regulated. Air-gapped, Arabic-first deployment with custom OCR, full compliance documentation and on-premise infrastructure.', ar:'للجهات الحكومية والخاضعة للتنظيم. نشر معزول يعتمد العربية أولاً، مع تعرّف ضوئي مخصص على النصوص، وتوثيق امتثال كامل، وبنية تحتية محلية.'},
+   time:{en:'16–24 weeks', ar:'من 16 إلى 24 أسبوعاً'}, inv:{en:'AED 1.5M+', ar:'1.5 مليون درهم فأكثر'}, lo:1500000, hi:null}
+];
+
+const PHASES = [
+  {t:{en:'Map the workflow and checkpoints', ar:'رسم سير العمل ونقاط المراجعة'}, d:{en:'Inputs, steps, approvers and the success measure, agreed in writing.', ar:'المدخلات والخطوات والمعتمدون ومقياس النجاح، باتفاق مكتوب.'}},
+  {t:{en:'Build the knowledge layer', ar:'بناء طبقة المعرفة'}, d:{en:'Collect the documents, then chunking, embeddings and retrieval.', ar:'جمع المستندات، ثم تقسيمها وتضمينها وإعداد الاسترجاع.'}},
+  {t:{en:'Connect the systems', ar:'ربط الأنظمة'}, d:{en:'Integrations with the systems the agent reads from and acts on.', ar:'التكامل مع الأنظمة التي يقرأ منها الوكيل ويعمل عليها.'}},
+  {t:{en:'Orchestrate the agent', ar:'تنسيق عمل الوكيل'}, d:{en:'Planning, tool calls and prompt design, with the human checkpoints wired in.', ar:'التخطيط واستدعاء الأدوات وتصميم التعليمات، مع دمج نقاط المراجعة البشرية.'}},
+  {t:{en:'Test on real cases', ar:'الاختبار على حالات حقيقية'}, d:{en:"Run last month's real cases end to end and review every error.", ar:'تشغيل حالات الشهر الماضي الحقيقية من البداية إلى النهاية ومراجعة كل خطأ.'}},
+  {t:{en:'Go live and observe', ar:'الإطلاق والمراقبة'}, d:{en:'Deployment, logging and monitoring, then handover to the named owner.', ar:'النشر والتسجيل والمراقبة، ثم التسليم للمسؤول المحدد.'}}
+];
+
+const S = {
+  proto:{en:'Prototype', ar:'نموذج أولي'},
+  bar_note:{en:'Concept built for Hashinclude by Mohammed Imad Thotan. Not an official Hashinclude product.', ar:'فكرة مقترحة أعدّها محمد عماد ثوتان لشركة Hashinclude، وليست منتجاً رسمياً منها.'},
+  note_btn:{en:"Read the builder's note", ar:'اقرأ ملاحظة المُعِدّ'},
+  eyebrow:{en:"Dubai's Agentic AI mandate · announced 4 May 2026 · a 24-month transition", ar:'توجيه دبي للتحول إلى الذكاء الاصطناعي الوكيل · أُعلن في 4 مايو 2026 · مرحلة انتقالية مدتها 24 شهراً'},
+  h1:{en:'Is your business ready for agentic AI?', ar:'هل شركتك جاهزة للذكاء الاصطناعي الوكيل؟'},
+  lede:{en:'Seven questions a builder asks before writing any code. Answer them in about three minutes to get your readiness score, the right first workflow, and a realistic scope, timeline and budget.', ar:'سبعة أسئلة يطرحها المهندس قبل كتابة أي سطر برمجي. أجب عنها في نحو ثلاث دقائق لتحصل على درجة جاهزيتك، وأنسب سير عمل تبدأ به، ونطاق وجدول زمني وميزانية واقعية.'},
+  spec1:{en:'7 questions', ar:'7 أسئلة'}, spec2:{en:'About 3 minutes', ar:'نحو 3 دقائق'}, spec3:{en:'4 delivery scopes', ar:'4 نطاقات تنفيذ'}, spec4:{en:'Arabic and English', ar:'بالعربية والإنجليزية'},
+  ex_note:{en:'Showing a worked example: a 40-person logistics company in Dubai. Change any answer and the result updates.', ar:'يُعرض مثال تطبيقي: شركة لوجستية في دبي تضم 40 موظفاً. غيّر أي إجابة وستتحدث النتيجة فوراً.'},
+  own_note:{en:'These are your answers. The result updates as you go.', ar:'هذه إجاباتك، وتتحدث النتيجة أثناء الإجابة.'},
+  blank:{en:'Clear all answers', ar:'مسح كل الإجابات'},
+  example:{en:'Load the example', ar:'تحميل المثال'},
+  p1:{en:'Your business', ar:'عن شركتك'},
+  company:{en:'Company name (optional)', ar:'اسم الشركة (اختياري)'},
+  company_ph:{en:'Your trading name', ar:'الاسم التجاري لشركتك'},
+  sector:{en:'Sector', ar:'القطاع'},
+  size:{en:'Team size', ar:'حجم الفريق'},
+  wfcount:{en:'Workflows to automate in year one', ar:'عدد سير العمل المراد أتمتتها في السنة الأولى'},
+  systems:{en:'Systems the agent must act on', ar:'عدد الأنظمة التي سيعمل عليها الوكيل'},
+  systems_hint:{en:'Email, CRM, ERP, accounting, WhatsApp, document store', ar:'البريد، إدارة العملاء، تخطيط الموارد، المحاسبة، واتساب، أرشيف المستندات'},
+  choose:{en:'Choose…', ar:'اختر…'},
+  p2:{en:'The seven questions', ar:'الأسئلة السبعة'},
+  p2_sub:{en:"Taken from Hashinclude's practitioner guide to the mandate. Each answer scores 0 to 3.", ar:'مأخوذة من دليل Hashinclude العملي حول التوجيه. تُقيَّم كل إجابة من 0 إلى 3.'},
+  why:{en:'Why it matters:', ar:'لماذا يهم:'},
+  wf_pick:{en:'Which workflow fits best?', ar:'أي سير عمل هو الأنسب؟'},
+  p3:{en:'The value at stake', ar:'القيمة المتوقعة'},
+  p3_sub:{en:'For the workflow you picked under question 1.', ar:'لسير العمل الذي اخترته ضمن السؤال 1.'},
+  people:{en:'People who do this work', ar:'عدد الموظفين الذين يؤدون هذا العمل'},
+  hours:{en:'Hours each spends on it per week', ar:'الساعات الأسبوعية لكل موظف'},
+  rate:{en:'Cost per hour incl. overheads (AED)', ar:'تكلفة الساعة شاملة المصاريف (درهم)'},
+  share:{en:'Share of the work the agent can take', ar:'نسبة العمل التي يمكن أن يتولاها الوكيل'},
+  share_hint:{en:'Starting assumption for {w}. Move it to match your own estimate.', ar:'افتراض مبدئي لـ«{w}». حرّكه ليوافق تقديرك.'},
+  share_hint_none:{en:'Pick a workflow under question 1 to load a starting assumption.', ar:'اختر سير عمل ضمن السؤال 1 لتحميل افتراض مبدئي.'},
+  calc_note:{en:'Assumes 48 working weeks a year. One full-time role is 1,920 hours.', ar:'نفترض 48 أسبوع عمل في السنة. الوظيفة بدوام كامل تعادل 1,920 ساعة.'},
+  readiness:{en:'Readiness', ar:'الجاهزية'},
+  answered_n:{en:'{n} of 7 answered', ar:'{n} من 7 مُجابة'},
+  band_low:{en:'Map before you build', ar:'خطّط قبل أن تبني'},
+  band_low_d:{en:'The right first step is mapping the workflow and the systems, not buying a system. Start with a free process audit.', ar:'الخطوة الأولى الصحيحة هي رسم سير العمل والأنظمة، لا شراء نظام. ابدأ بتدقيق مجاني للعمليات.'},
+  band_mid:{en:'Ready for a scoped pilot', ar:'جاهز لتجربة محددة النطاق'},
+  band_mid_d:{en:'Start narrow with one workflow, and close the gaps below before the build begins.', ar:'ابدأ بنطاق ضيق بسير عمل واحد، وسُدّ الثغرات أدناه قبل بدء البناء.'},
+  band_high:{en:'Ready to build', ar:'جاهز للبناء'},
+  band_high_d:{en:'You can answer the seven questions clearly. Start narrow, prove value, expand.', ar:'تستطيع الإجابة عن الأسئلة السبعة بوضوح. ابدأ بنطاق ضيق، وأثبت القيمة، ثم توسّع.'},
+  incomplete:{en:'In progress', ar:'قيد الإكمال'},
+  incomplete_d:{en:'Questions left: {n}. Finish them to get your score.', ar:'الأسئلة المتبقية: {n}. أكملها للحصول على درجتك.'},
+  radar_cap:{en:'Each axis scores 0 to 3. Red labels need work first.', ar:'يُقيَّم كل محور من 0 إلى 3. العناوين الحمراء تحتاج إلى معالجة أولاً.'},
+  radar_aria:{en:'Readiness by dimension', ar:'الجاهزية حسب المحور'},
+  scope:{en:'Indicative scope', ar:'النطاق المبدئي'},
+  timeline:{en:'Timeline', ar:'المدة'},
+  investment:{en:'Investment', ar:'الاستثمار'},
+  r_sys23:{en:"Two or three systems to act on: more than Compact's single integration", ar:'نظامان أو ثلاثة: أكثر من التكامل الواحد في النطاق المُصغّر'},
+  r_sys4:{en:'Four or more systems to act on: a full integration surface', ar:'أربعة أنظمة أو أكثر: نطاق تكامل شامل'},
+  r_wf23:{en:'Two or three workflows in year one: a multi-workflow scope', ar:'اثنان أو ثلاثة من سير العمل في السنة الأولى: نطاق متعدد'},
+  r_wf4:{en:'Four or more workflows: platform-level architecture', ar:'أربعة من سير العمل أو أكثر: بنية على مستوى المنصة'},
+  r_size201:{en:'201–1,000 people: mid-market governance and monitoring', ar:'من 201 إلى 1,000 موظف: حوكمة ومراقبة لشركة متوسطة'},
+  r_size1000:{en:'More than 1,000 people: production reliability for thousands of users', ar:'أكثر من 1,000 موظف: موثوقية إنتاجية لآلاف المستخدمين'},
+  r_gov:{en:'Government or regulated entity', ar:'جهة حكومية أو خاضعة للتنظيم'},
+  r_airgap:{en:'Data must stay on-premise or air-gapped', ar:'يجب أن تبقى البيانات على خوادم محلية أو في بيئة معزولة'},
+  r_compact:{en:'One workflow and one system to act on: the Compact scope', ar:'سير عمل واحد ونظام واحد: النطاق المُصغّر'},
+  r_pending:{en:'Fill in team size, workflows and systems to refine the scope.', ar:'أدخل حجم الفريق وعدد سير العمل والأنظمة لتحديد النطاق بدقة.'},
+  roi_hours:{en:'Hours returned / year', ar:'الساعات المستردة سنوياً'},
+  roi_value:{en:'Value / year (AED)', ar:'القيمة السنوية (درهم)'},
+  roi_fte:{en:'Full-time roles freed', ar:'ما يعادل وظائف بدوام كامل'},
+  roi_pb:{en:'Payback (months)', ar:'فترة الاسترداد (بالأشهر)'},
+  from:{en:'from', ar:'من'},
+  pb_warn:{en:'At this value, the scope is hard to justify on time saved alone. Start with the single workflow that returns the most hours.', ar:'بهذه القيمة يصعب تبرير النطاق بالوقت الموفَّر وحده. ابدأ بسير العمل الذي يوفّر أكبر عدد من الساعات.'},
+  roi_missing:{en:'Add the numbers in part 3 to estimate the value.', ar:'أدخل الأرقام في الجزء 3 لتقدير القيمة.'},
+  see_brief:{en:'Read the full readiness brief ↓', ar:'اقرأ تقرير الجاهزية كاملاً ↓'},
+  see_result:{en:'See result', ar:'عرض النتيجة'},
+  brief_eyebrow:{en:'Readiness brief', ar:'تقرير الجاهزية'},
+  brief_title:{en:'What to do next, in order', ar:'ما الذي تفعله بعد ذلك، بالترتيب'},
+  gaps_h:{en:'Close these gaps first', ar:'سُدّ هذه الثغرات أولاً'},
+  no_gaps:{en:'No critical gaps. Every answer scored 2 or higher.', ar:'لا توجد ثغرات حرجة، فكل إجابة حصلت على 2 أو أكثر.'},
+  gaps_pending:{en:'Gaps appear here as you answer.', ar:'تظهر الثغرات هنا أثناء الإجابة.'},
+  wf_h:{en:'Recommended first workflow', ar:'سير العمل المقترح للبدء'},
+  proof_h:{en:'Where Hashinclude has built this', ar:'أين نفّذت Hashinclude ذلك'},
+  wf_pending:{en:'Pick a workflow under question 1.', ar:'اختر سير عمل ضمن السؤال 1.'},
+  phases_h:{en:'Delivery phases', ar:'مراحل التنفيذ'},
+  week:{en:'Week', ar:'الأسبوع'}, phase:{en:'Phase', ar:'المرحلة'},
+  phases_note:{en:'Indicative. The phases follow the engineering work Hashinclude lists for a production agentic system: chunking, embeddings, retrieval, orchestration, prompt design, integration testing, deployment and observability.', ar:'إرشادي. تتبع المراحل العمل الهندسي الذي تذكره Hashinclude لأي نظام وكيل إنتاجي: تقسيم المستندات، والتضمين، والاسترجاع، والتنسيق، وتصميم التعليمات، واختبار التكامل، والنشر، والمراقبة.'},
+  handoff_h:{en:"What Hashinclude's team would receive", ar:'ما سيصل إلى فريق Hashinclude'},
+  handoff_d:{en:'In production, this summary travels with the audit booking, so the first conversation starts from facts.', ar:'في النسخة الفعلية، يُرسل هذا الملخص مع حجز التدقيق، فتبدأ المحادثة الأولى من الحقائق.'},
+  copy:{en:'Copy summary', ar:'نسخ الملخص'},
+  copied:{en:'Summary copied.', ar:'تم نسخ الملخص.'},
+  copy_fail:{en:'Copying is blocked here. The summary is selected, so press Ctrl+C or ⌘C.', ar:'النسخ غير متاح هنا. تم تحديد الملخص، فاضغط Ctrl+C أو ⌘C.'},
+  book:{en:'Book a free process audit', ar:'احجز تدقيقاً مجانياً للعمليات'},
+  book_note:{en:'Prototype: booking is not connected. In production this opens the audit booking with the summary attached.', ar:'نموذج أولي: الحجز غير مفعّل. في النسخة الفعلية يفتح حجز التدقيق مع إرفاق الملخص.'},
+  ladder_h:{en:'The four scopes, side by side', ar:'النطاقات الأربعة جنباً إلى جنب'},
+  th_scope:{en:'Scope', ar:'النطاق'}, th_covers:{en:'What it covers', ar:'ما يشمله'}, th_time:{en:'Timeline', ar:'المدة'}, th_inv:{en:'Investment', ar:'الاستثمار'},
+  recommended:{en:'Your fit', ar:'الأنسب لك'},
+  ladder_note:{en:'Below the Compact floor is consulting, not delivery. Ranges as published by Hashinclude in', ar:'ما دون النطاق المُصغّر استشارات وليس تنفيذاً. النطاقات كما نشرتها Hashinclude في'},
+  ladder_src:{en:'Insight 09, May 2026', ar:'المقال 09، مايو 2026'},
+  h_title:{en:'Agentic AI readiness check: new enquiry', ar:'فحص الجاهزية للذكاء الاصطناعي الوكيل: استفسار جديد'},
+  h_company:{en:'Company', ar:'الشركة'}, h_sector:{en:'Sector', ar:'القطاع'}, h_team:{en:'Team', ar:'الفريق'},
+  h_ready:{en:'Readiness', ar:'الجاهزية'}, h_wf:{en:'First workflow', ar:'سير العمل الأول'},
+  h_systems:{en:'Systems to act on', ar:'الأنظمة'}, h_wfcount:{en:'Workflows in year one', ar:'سير العمل في السنة الأولى'},
+  h_data:{en:'Data', ar:'البيانات'}, h_gaps:{en:'Gaps to close', ar:'ثغرات يجب سدها'},
+  h_scope:{en:'Indicative scope', ar:'النطاق المبدئي'}, h_value:{en:'Estimated value', ar:'القيمة التقديرية'},
+  h_hours:{en:'hours a year', ar:'ساعة سنوياً'}, h_priority:{en:'Lead priority', ar:'أولوية العميل'}, h_next:{en:'Suggested next step', ar:'الخطوة المقترحة'},
+  not_given:{en:'Not given', ar:'غير مذكور'}, h_incomplete:{en:'Incomplete ({n}/7 answered)', ar:'غير مكتمل ({n}/7)'}, h_nogaps:{en:'None', ar:'لا يوجد'},
+  pr_a:{en:'A · ready to scope a build', ar:'أ · جاهز لتحديد نطاق البناء'},
+  pr_b:{en:'B · process audit, then a pilot proposal', ar:'ب · تدقيق العمليات ثم عرض تجريبي'},
+  pr_c:{en:'C · process audit and workflow mapping', ar:'ج · تدقيق العمليات ورسم سير العمل'},
+  pr_pending:{en:'To confirm once the check is complete', ar:'تُحدد بعد إكمال الفحص'},
+  next_low:{en:'Free 30-minute process audit to map the workflow', ar:'تدقيق مجاني للعمليات لمدة 30 دقيقة لرسم سير العمل'},
+  next_mid:{en:'Free process audit, then a pilot proposal for one workflow', ar:'تدقيق مجاني للعمليات، ثم عرض تجريبي لسير عمل واحد'},
+  next_high:{en:'Scoping call for a {t} build', ar:'اجتماع لتحديد نطاق البناء ({t})'},
+  sep:{en:', ', ar:'، '},
+  close:{en:'Close', ar:'إغلاق'},
+  note_eyebrow:{en:'From the builder', ar:'من المُعِدّ'},
+  note_h:{en:'Why I built this, and where it earns its place', ar:'لماذا بنيت هذه الأداة، وأين تضيف قيمتها'},
+  note_p1:{en:"Hashinclude has grown on referrals alone. The mandate is about to put every Dubai business owner in front of the same question, and your Insight 09 predicts the market will split into builders and packagers. Buyers can't easily tell the two apart. This check lets them, using your seven questions, and it hands your team a qualified lead instead of a cold enquiry.", ar:'نمت Hashinclude بالاعتماد على التوصيات وحدها. والتوجيه الجديد سيضع كل صاحب عمل في دبي أمام السؤال نفسه، ومقالكم التاسع يتوقع أن ينقسم السوق إلى من يبنون فعلاً ومن يعيدون التغليف. يصعب على المشتري التمييز بينهما، وهذا الفحص يمكّنه من ذلك باستخدام أسئلتكم السبعة، ويسلّم فريقكم عميلاً مؤهلاً بدلاً من استفسار عابر.'},
+  note_plug_h:{en:'How it plugs into the funnel', ar:'كيف يندمج في مسار المبيعات'},
+  note_plug1:{en:'Placed on the Automate page and at the end of Insight 09, as the step before the free process audit.', ar:'يوضع في صفحة الأتمتة وفي نهاية المقال التاسع، كخطوة تسبق التدقيق المجاني للعمليات.'},
+  note_plug2:{en:'The summary becomes the audit agenda. Your team walks in knowing the workflow, the systems, the data tier and the gaps.', ar:'يصبح الملخص جدول أعمال التدقيق، فيدخل فريقكم وهو يعرف سير العمل والأنظمة ومستوى البيانات والثغرات.'},
+  note_plug3:{en:'Leads arrive sorted: A to scope a build, B for an audit and then a pilot, C for workflow mapping.', ar:'يصل العملاء مصنّفين مسبقاً: (أ) لتحديد نطاق البناء، (ب) للتدقيق ثم التجربة، (ج) لرسم سير العمل.'},
+  note_plug4:{en:"The same context can be passed to the site's agent, so the chat starts from the brief instead of from zero.", ar:'يمكن تمرير السياق نفسه إلى وكيل الموقع، فتبدأ المحادثة من التقرير لا من الصفر.'},
+  note_measure_h:{en:'What I would measure', ar:'ما سأقيسه'},
+  note_m1:{en:'Completion rate of the check', ar:'نسبة إكمال الفحص'},
+  note_m2:{en:'Audits booked per 100 completed checks', ar:'عدد التدقيقات المحجوزة لكل 100 فحص مكتمل'},
+  note_m3:{en:'Mix of incoming demand across the four scopes', ar:'توزيع الطلب الوارد على النطاقات الأربعة'},
+  note_m4:{en:'Audit-to-proposal conversion', ar:'نسبة التحول من التدقيق إلى عرض سعر'},
+  note_m5:{en:'Estimated value per lead against contracted value', ar:'القيمة التقديرية لكل عميل مقابل القيمة المتعاقد عليها'},
+  note_90_h:{en:'My first 90 days, if I join', ar:'أول 90 يوماً إن انضممت'},
+  d30:{en:'Day 30', ar:'اليوم 30'}, d60:{en:'Day 60', ar:'اليوم 60'}, d90:{en:'Day 90', ar:'اليوم 90'},
+  note_30:{en:'Instrument the funnel and build a pipeline dashboard from the enquiries already coming in.', ar:'ربط مسار المبيعات بأدوات القياس، وبناء لوحة متابعة من الاستفسارات الواردة حالياً.'},
+  note_60:{en:'Turn delivered projects into sector ROI benchmarks and one-page case briefs for sales conversations.', ar:'تحويل المشاريع المنفذة إلى مؤشرات عائد حسب القطاع، وملخصات حالات من صفحة واحدة لمحادثات المبيعات.'},
+  note_90:{en:'Ship the Arabic-first version, and adapt one for the Dubai Chamber business-council training tracks the mandate created.', ar:'إطلاق النسخة العربية أولاً، وتكييف نسخة لمسارات التدريب في مجالس الأعمال التابعة لغرفة دبي التي أنشأها التوجيه.'},
+  me_name:{en:'Mohammed Imad Thotan', ar:'محمد عماد ثوتان'},
+  me_line:{en:'BBA in Business Analytics, MAHE Manipal (2026) · Technical Lead, Web Development at Qlovix · Founder of SkillBridge, an AI-enabled employability platform', ar:'بكالوريوس إدارة الأعمال في تحليلات الأعمال، جامعة مانيبال (MAHE) 2026 · قائد تقني لتطوير الويب في Qlovix · مؤسس SkillBridge، منصة توظيف مدعومة بالذكاء الاصطناعي'},
+  built_with:{en:'Researched and built in a day, with Claude as co-builder.', ar:'بُحثت وبُنيت في يوم واحد، بمساعدة Claude.'},
+  foot1:{en:'Concept prototype by Mohammed Imad Thotan. Not affiliated with or endorsed by Hashinclude.', ar:'نموذج أولي مقترح من إعداد محمد عماد ثوتان، وغير تابع لـHashinclude أو معتمد منها.'},
+  foot2:{en:"Scores and value estimates are indicative. Scope ranges, project figures and the seven questions come from Hashinclude's public website, read in October 2026:", ar:'الدرجات وتقديرات القيمة إرشادية. نطاقات المشاريع وأرقامها والأسئلة السبعة مأخوذة من موقع Hashinclude العام، بتاريخ أكتوبر 2026:'}
+};
+
+/* ---------- helpers ---------- */
+const t = k => (S[k] ? S[k][lang] : k);
+const tx = o => (o ? o[lang] : '');
+const fmt = n => new Intl.NumberFormat('en-US').format(n);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const money = n => lang === 'ar' ? `${fmt(n)} درهم` : `AED ${fmt(n)}`;
+const WF = id => WORKFLOWS.find(w => w.id === id) || null;
+const find = (list, id) => list.find(x => x.id === id) || null;
+
+function exampleState(){
+  return {company:'', sector:'logistics', size:'s21', wfCount:'1', systems:'1',
+    q:{q1:'c', q2:'b', q3:'c', q4:'b', q5:'cloud', q6:'b', q7:'b'},
+    workflow:'docs', people:4, hours:15, rate:70, share:50, shareTouched:false};
+}
+function blankState(){
+  return {company:'', sector:'', size:'', wfCount:'', systems:'', q:{}, workflow:null,
+    people:null, hours:null, rate:null, share:40, shareTouched:false};
+}
+let state = exampleState();
+let isExample = true;
+
+/* ---------- scoring ---------- */
+function computeTier(){
+  let lvl = 0; const r = [];
+  const bump = (l, k) => { if (l > lvl) lvl = l; r.push(k); };
+  if (state.systems === '2-3') bump(1, 'r_sys23');
+  if (state.systems === '4-6' || state.systems === '7+') bump(2, 'r_sys4');
+  if (state.wfCount === '2-3') bump(1, 'r_wf23');
+  if (state.wfCount === '4+') bump(2, 'r_wf4');
+  if (state.size === 's201') bump(1, 'r_size201');
+  if (state.size === 's1000') bump(2, 'r_size1000');
+  if (state.sector === 'gov') bump(3, 'r_gov');
+  if (state.q.q5 === 'airgap') bump(3, 'r_airgap');
+  const missing = !state.systems || !state.wfCount || !state.size;
+  if (!r.length && !missing) r.push('r_compact');
+  if (missing) r.push('r_pending');
+  return {tier: TIERS[lvl], reasons: r};
+}
+function computeROI(tier){
+  const p = state.people, h = state.hours, rate = state.rate, share = state.share;
+  if (!(p > 0 && h > 0 && rate > 0 && share > 0)) return null;
+  const annual = p * h * 48;
+  const freed = annual * share / 100;
+  const value = Math.round(freed * rate / 100) * 100;
+  const perMonth = (freed * rate) / 12;
+  const pbLo = Math.max(1, Math.round(tier.lo / perMonth));
+  const pbHi = tier.hi ? Math.max(1, Math.round(tier.hi / perMonth)) : null;
+  return {annual, freed: Math.round(freed), value, fte: freed / 1920, pbLo, pbHi};
+}
+function compute(){
+  const scores = QUESTIONS.map(q => {
+    const o = q.opts.find(o => o.id === state.q[q.id]);
+    return o ? o.s : null;
+  });
+  const answered = scores.filter(s => s != null).length;
+  const total = scores.reduce((a, s) => a + (s || 0), 0);
+  const score = answered === 7 ? Math.round(total / 21 * 100) : null;
+  const band = score == null ? null : score < 40 ? 'low' : score < 70 ? 'mid' : 'high';
+  const tr = computeTier();
+  const roi = computeROI(tr.tier);
+  const gaps = QUESTIONS.map((q, i) => ({q, s: scores[i]})).filter(g => g.s != null && g.s <= 1).sort((a, b) => a.s - b.s);
+  return {scores, answered, score, band, tier: tr.tier, reasons: tr.reasons, roi, gaps};
+}
+const bandCls = b => b === 'low' ? 'crit' : b === 'mid' ? 'warn' : b === 'high' ? 'good' : '';
+function pbText(r){
+  if (!r) return '—';
+  if (r.pbHi == null) return `${t('from')} ${r.pbLo}`;
+  if (r.pbLo === r.pbHi) return `${r.pbLo}`;
+  return lang === 'ar' ? `من ${r.pbLo} إلى ${r.pbHi}` : `${r.pbLo}–${r.pbHi}`;
+}
+
+/* ---------- markup ---------- */
+function selectField(id, field, label, list, hint){
+  return `<div class="field"><label for="${id}">${label}</label>
+    <select id="${id}" data-field="${field}"><option value="">${t('choose')}</option>${list.map(o => `<option value="${o.id}">${tx(o)}</option>`).join('')}</select>
+    ${hint ? `<p class="hint">${hint}</p>` : ''}</div>`;
+}
+function numberField(id, field, label, min, max, step){
+  return `<div class="field"><label for="${id}">${label}</label>
+    <input id="${id}" data-field="${field}" type="number" inputmode="numeric" min="${min}" max="${max}" step="${step}"></div>`;
+}
+function questionHTML(q, i){
+  const wf = q.id === 'q1' ? `
+    <div class="wf-pick" role="radiogroup" aria-labelledby="wfl">
+      <p class="lbl" id="wfl">${t('wf_pick')}</p>
+      <div class="wf-grid">${WORKFLOWS.map(w => `
+        <label class="opt wf" for="wf-${w.id}"><input type="radio" name="workflow" id="wf-${w.id}" value="${w.id}">
+          <span><b>${tx(w.name)}</b><small>${tx(w.desc)}</small></span></label>`).join('')}
+      </div>
+    </div>` : '';
+  return `<div class="q" id="card-${q.id}">
+    <div class="q-head"><span class="q-no">Q${i + 1}</span><h3 id="${q.id}-h">${tx(q.title)}</h3>
+      <p class="why"><b>${t('why')}</b> ${tx(q.why)}</p></div>
+    <fieldset class="opts" aria-labelledby="${q.id}-h"><legend class="sr">${tx(q.title)}</legend>
+      ${q.opts.map(o => `<label class="opt" for="${q.id}-${o.id}"><input type="radio" name="${q.id}" id="${q.id}-${o.id}" value="${o.id}"><span>${tx(o)}</span></label>`).join('')}
+    </fieldset>${wf}
+  </div>`;
+}
+function radarSVG(scores){
+  const N = 7, R = 80;
+  const pt = (i, r) => { const a = -Math.PI / 2 + i * 2 * Math.PI / N; return [r * Math.cos(a), r * Math.sin(a)]; };
+  const f = p => p.map(v => v.toFixed(1)).join(',');
+  let s = '';
+  for (let k = 1; k <= 3; k++) s += `<polygon class="rg" points="${Array.from({length: N}, (_, i) => f(pt(i, R * k / 3))).join(' ')}"/>`;
+  for (let i = 0; i < N; i++){ const [x, y] = pt(i, R); s += `<line class="rax" x1="0" y1="0" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}"/>`; }
+  const dp = scores.map((v, i) => pt(i, R * (v || 0) / 3));
+  if (scores.some(v => v != null)) s += `<polygon class="rdata" points="${dp.map(f).join(' ')}"/>`;
+  scores.forEach((v, i) => { if (v != null){ const [x, y] = dp[i]; s += `<circle class="rdot" cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3.5"/>`; } });
+  QUESTIONS.forEach((q, i) => {
+    const [x, y] = pt(i, R + 14);
+    const anchor = Math.abs(x) < 8 ? 'middle' : x > 0 ? 'start' : 'end';
+    const dy = y < -R * 0.6 ? -2 : y > R * 0.6 ? 10 : 4;
+    const cls = scores[i] != null && scores[i] <= 1 ? 'rlab low' : 'rlab';
+    s += `<text class="${cls}" x="${x.toFixed(1)}" y="${(y + dy).toFixed(1)}" text-anchor="${anchor}">${tx(q.axis)}</text>`;
+  });
+  return `<svg viewBox="-165 -112 330 224" role="img" aria-label="${t('radar_aria')}">${s}</svg>`;
+}
+function panelHTML(c){
+  const cls = bandCls(c.band);
+  const C = 2 * Math.PI * 52;
+  const frac = c.score == null ? 0 : c.score / 100;
+  const roi = c.roi;
+  return `
+  <div class="panel-head"><span class="mono-label">${t('readiness')}</span><span class="mono-label">${t('answered_n').replace('{n}', c.answered)}</span></div>
+  <div class="score-row">
+    <svg class="ring ${cls}" viewBox="0 0 120 120" role="img" aria-label="${t('readiness')}: ${c.score == null ? '—' : c.score} / 100">
+      <circle cx="60" cy="60" r="52" class="ring-bg"/>
+      <circle cx="60" cy="60" r="52" class="ring-fg" stroke-dasharray="${(C * frac).toFixed(1)} ${C.toFixed(1)}" transform="rotate(-90 60 60)" style="opacity:${frac > 0 ? 1 : 0}"/>
+      <text x="60" y="58" class="ring-num" text-anchor="middle" dominant-baseline="central">${c.score == null ? '—' : c.score}</text>
+      <text x="60" y="86" class="ring-sub" text-anchor="middle">/ 100</text>
+    </svg>
+    <div class="score-text">${c.band
+      ? `<span class="pill ${cls}">${t('band_' + c.band)}</span><p>${t('band_' + c.band + '_d')}</p>`
+      : `<span class="pill">${t('incomplete')}</span><p>${t('incomplete_d').replace('{n}', 7 - c.answered)}</p>`}</div>
+  </div>
+  <figure class="radar">${radarSVG(c.scores)}<figcaption>${t('radar_cap')}</figcaption></figure>
+  <div class="tier">
+    <span class="mono-label">${t('scope')}</span>
+    <div class="tier-name">${tx(c.tier.name)}</div>
+    <dl class="tier-meta"><div><dt>${t('timeline')}</dt><dd>${tx(c.tier.time)}</dd></div><div><dt>${t('investment')}</dt><dd>${tx(c.tier.inv)}</dd></div></dl>
+    <ul class="reasons">${c.reasons.map(k => `<li>${t(k)}</li>`).join('')}</ul>
+  </div>
+  <div class="roi">${roi ? `
+    <div class="stat"><span>${t('roi_hours')}</span><b>${fmt(roi.freed)}</b></div>
+    <div class="stat"><span>${t('roi_value')}</span><b>${fmt(roi.value)}</b></div>
+    <div class="stat"><span>${t('roi_fte')}</span><b>${roi.fte.toFixed(1)}</b></div>
+    <div class="stat"><span>${t('roi_pb')}</span><b>${pbText(roi)}</b></div>` : `<p class="muted">${t('roi_missing')}</p>`}
+  </div>
+  ${roi && roi.pbLo > 36 ? `<p class="warnbox">${t('pb_warn')}</p>` : ''}
+  <a class="to-brief" href="#brief">${t('see_brief')}</a>`;
+}
+function briefHTML(c){
+  const wf = WF(state.workflow);
+  const comp = state.company.trim();
+  return `
+  <div class="brief-head">
+    <span class="mono-label">${t('brief_eyebrow')}${comp ? ' · ' + esc(comp) : ''}</span>
+    <h2 id="briefh">${t('brief_title')}</h2>
+  </div>
+  <div class="brief-grid">
+    <article class="card">
+      <h3>${t('gaps_h')}</h3>
+      ${c.gaps.length
+        ? `<ol class="gaps">${c.gaps.map(g => `<li><span class="chip ${g.s === 0 ? 'crit' : 'warn'}">${g.s}/3</span><div><strong>${tx(g.q.short)}</strong><p>${tx(GAPFIX[g.q.id])}</p></div></li>`).join('')}</ol>`
+        : `<p class="muted">${c.answered === 7 ? t('no_gaps') : t('gaps_pending')}</p>`}
+    </article>
+    <article class="card">
+      <h3>${t('wf_h')}</h3>
+      ${wf ? `<p class="wf-name">${tx(wf.name)}</p><p>${tx(wf.desc)}</p>
+        ${c.roi ? `<p class="mini"><span>${t('roi_hours')}: <b>${fmt(c.roi.freed)}</b></span><span>${t('roi_value')}: <b>${fmt(c.roi.value)}</b></span></p>` : ''}
+        <div class="proof"><span class="mono-label">${t('proof_h')}</span><p>${tx(wf.proof)}</p></div>`
+        : `<p class="muted">${t('wf_pending')}</p>`}
+    </article>
+    <article class="card wide">
+      <div class="card-head"><h3>${t('phases_h')}</h3><span class="mono-label">${tx(c.tier.name)} · ${tx(c.tier.time)}</span></div>
+      <ol class="phases">${PHASES.map((p, i) => `<li><span class="mono-label">${c.tier.id === 'compact' ? t('week') : t('phase')} ${i + 1}</span><strong>${tx(p.t)}</strong><p>${tx(p.d)}</p></li>`).join('')}</ol>
+      <p class="fine">${t('phases_note')}</p>
+    </article>
+    <article class="card">
+      <h3>${t('handoff_h')}</h3>
+      <p class="muted">${t('handoff_d')}</p>
+      <pre class="handoff" id="handoff" dir="auto"></pre>
+      <div class="actions"><button type="button" class="btn" id="btnCopy">${t('copy')}</button><button type="button" class="btn primary" id="btnBook">${t('book')}</button></div>
+      <p class="fine" id="copyMsg" role="status"></p>
+    </article>
+    <article class="card">
+      <h3>${t('ladder_h')}</h3>
+      <div class="table-scroll"><table>
+        <thead><tr><th scope="col">${t('th_scope')}</th><th scope="col">${t('th_covers')}</th><th scope="col">${t('th_time')}</th><th scope="col">${t('th_inv')}</th></tr></thead>
+        <tbody>${TIERS.map(tr => `<tr class="${tr.id === c.tier.id ? 'rec' : ''}"><th scope="row">${tx(tr.name)}${tr.id === c.tier.id ? `<br><span class="pill acc" style="margin:4px 0 0">${t('recommended')}</span>` : ''}</th><td>${tx(tr.desc)}</td><td class="num">${tx(tr.time)}</td><td class="num">${tx(tr.inv)}</td></tr>`).join('')}</tbody>
+      </table></div>
+      <p class="fine">${t('ladder_note')} <a href="https://hashinclu.de/en/insights/dubai-agentic-ai-2026" target="_blank" rel="noopener">${t('ladder_src')}</a>.</p>
+    </article>
+  </div>`;
+}
+function handoffText(c){
+  const none = t('not_given');
+  const L = (k, v) => `${t(k)}: ${v}`;
+  const wf = WF(state.workflow);
+  const sec = find(SECTORS, state.sector), size = find(SIZES, state.size), sys = find(SYSTEMS, state.systems), wfc = find(WFCOUNT, state.wfCount);
+  const q5 = QUESTIONS[4].opts.find(o => o.id === state.q.q5);
+  const prio = c.score == null ? t('pr_pending') : c.band === 'high' ? t('pr_a') : c.band === 'mid' ? t('pr_b') : t('pr_c');
+  const next = c.band === 'high' ? t('next_high').replace('{t}', tx(c.tier.name)) : c.band === 'mid' ? t('next_mid') : t('next_low');
+  return [
+    t('h_title'), '',
+    L('h_company', state.company.trim() || none),
+    L('h_sector', sec ? tx(sec) : none),
+    L('h_team', size ? tx(size) : none),
+    L('h_ready', c.score == null ? t('h_incomplete').replace('{n}', c.answered) : `${c.score}/100 · ${t('band_' + c.band)}`),
+    L('h_wf', wf ? tx(wf.name) : none),
+    L('h_systems', sys ? tx(sys) : none),
+    L('h_wfcount', wfc ? tx(wfc) : none),
+    L('h_data', q5 ? tx(q5) : none),
+    L('h_gaps', c.gaps.length ? c.gaps.map(g => tx(g.q.short)).join(t('sep')) : t('h_nogaps')),
+    L('h_scope', `${tx(c.tier.name)} · ${tx(c.tier.time)} · ${tx(c.tier.inv)}`),
+    L('h_value', c.roi ? `${fmt(c.roi.freed)} ${t('h_hours')} ≈ ${money(c.roi.value)}` : none),
+    L('h_priority', prio),
+    L('h_next', next)
+  ].join('\n');
+}
+function mbarHTML(c){
+  return `<span><b>${c.score == null ? '—' : c.score}</b>/100 · ${c.band ? t('band_' + c.band) : t('incomplete')} · ${tx(c.tier.name)}</span><a href="#result">${t('see_result')}</a>`;
+}
+function noteHTML(){
+  return `<div class="note-in">
+    <div class="note-head"><span class="mono-label">${t('note_eyebrow')}</span><button type="button" class="icon-btn" id="btnClose" aria-label="${t('close')}">×</button></div>
+    <h2 id="noteh">${t('note_h')}</h2>
+    <p>${t('note_p1')}</p>
+    <h3>${t('note_plug_h')}</h3>
+    <ul>${['note_plug1','note_plug2','note_plug3','note_plug4'].map(k => `<li>${t(k)}</li>`).join('')}</ul>
+    <h3>${t('note_measure_h')}</h3>
+    <ul>${['note_m1','note_m2','note_m3','note_m4','note_m5'].map(k => `<li>${t(k)}</li>`).join('')}</ul>
+    <h3>${t('note_90_h')}</h3>
+    <ol class="days"><li><span class="mono-label">${t('d30')}</span><span>${t('note_30')}</span></li><li><span class="mono-label">${t('d60')}</span><span>${t('note_60')}</span></li><li><span class="mono-label">${t('d90')}</span><span>${t('note_90')}</span></li></ol>
+    <div class="about">
+      <strong>${t('me_name')}</strong>
+      <p>${t('me_line')}</p>
+      <p class="contact"><span dir="ltr">+971 54 125 6623</span><span dir="ltr">mohammedimad031@gmail.com</span></p>
+      <p class="fine">${t('built_with')}</p>
+    </div>
+  </div>`;
+}
+
+/* ---------- render ---------- */
+const app = $('#app');
+function renderApp(){
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  app.innerHTML = `
+  <header class="topbar"><div class="wrap topbar-in">
+    <p><span class="tag">${t('proto')}</span>${t('bar_note')}</p>
+    <div class="top-actions">
+      <button type="button" class="btn outline" id="btnNote">${t('note_btn')}</button>
+      <button type="button" class="btn ghost" id="btnLang" lang="${lang === 'en' ? 'ar' : 'en'}">${lang === 'en' ? 'عربي' : 'English'}</button>
+    </div>
+  </div></header>
+  <section class="hero wrap">
+    <p class="eyebrow">${t('eyebrow')}</p>
+    <h1>${t('h1')}</h1>
+    <p class="lede">${t('lede')}</p>
+    <ul class="specs">${['spec1','spec2','spec3','spec4'].map(k => `<li>${t(k)}</li>`).join('')}</ul>
+  </section>
+  <div class="wrap">
+    <div class="notice" id="notice"><p id="noticeText"></p>
+      <div class="notice-actions"><button type="button" class="btn ghost" id="btnBlank">${t('blank')}</button><button type="button" class="btn ghost" id="btnExample">${t('example')}</button></div></div>
+    <div class="layout">
+      <form class="form" id="form" novalidate>
+        <section class="part" aria-labelledby="p1h">
+          <div class="part-head"><span class="part-no">1 / 3</span><h2 id="p1h">${t('p1')}</h2></div>
+          <div class="fields">
+            <div class="field span2"><label for="f-company">${t('company')}</label><input id="f-company" data-field="company" type="text" autocomplete="organization" maxlength="80" placeholder="${t('company_ph')}"></div>
+            ${selectField('f-sector', 'sector', t('sector'), SECTORS)}
+            ${selectField('f-size', 'size', t('size'), SIZES)}
+            ${selectField('f-wfcount', 'wfCount', t('wfcount'), WFCOUNT)}
+            ${selectField('f-systems', 'systems', t('systems'), SYSTEMS, t('systems_hint'))}
+          </div>
+        </section>
+        <section class="part" aria-labelledby="p2h">
+          <div class="part-head"><span class="part-no">2 / 3</span><h2 id="p2h">${t('p2')}</h2><p class="part-sub">${t('p2_sub')}</p></div>
+          ${QUESTIONS.map(questionHTML).join('')}
+        </section>
+        <section class="part" aria-labelledby="p3h">
+          <div class="part-head"><span class="part-no">3 / 3</span><h2 id="p3h">${t('p3')}</h2><p class="part-sub">${t('p3_sub')}</p></div>
+          <div class="fields">
+            ${numberField('f-people', 'people', t('people'), 1, 1000, 1)}
+            ${numberField('f-hours', 'hours', t('hours'), 1, 60, 1)}
+            ${numberField('f-rate', 'rate', t('rate'), 10, 2000, 5)}
+            <div class="field"><label for="f-share">${t('share')}</label>
+              <div class="range-row"><input id="f-share" data-field="share" type="range" min="10" max="80" step="5"><output class="range-out" id="shareOut" for="f-share"></output></div>
+              <p class="hint" id="shareHint"></p></div>
+          </div>
+          <p class="calc-note">${t('calc_note')}</p>
+        </section>
+      </form>
+      <aside class="panel" id="result"></aside>
+    </div>
+  </div>
+  <section class="brief wrap" id="brief" aria-labelledby="briefh"></section>
+  <footer class="foot wrap"><p>${t('foot1')}</p><p>${t('foot2')} <a href="https://hashinclu.de/en/" target="_blank" rel="noopener">hashinclu.de</a></p></footer>
+  <div class="mbar" id="mbar"></div>`;
+  $('#note').innerHTML = noteHTML();
+  // restore values
+  $('#f-company').value = state.company;
+  $('#f-sector').value = state.sector;
+  $('#f-size').value = state.size;
+  $('#f-wfcount').value = state.wfCount;
+  $('#f-systems').value = state.systems;
+  $('#f-people').value = state.people ?? '';
+  $('#f-hours').value = state.hours ?? '';
+  $('#f-rate').value = state.rate ?? '';
+  $('#f-share').value = state.share;
+  QUESTIONS.forEach(q => { const el = document.getElementById(`${q.id}-${state.q[q.id]}`); if (el) el.checked = true; syncOn(q.id); });
+  if (state.workflow){ const el = document.getElementById(`wf-${state.workflow}`); if (el) el.checked = true; }
+  syncOn('workflow');
+  updateNotice(); updateShare(); renderResults();
+}
+function syncOn(name){
+  document.querySelectorAll(`input[name="${name}"]`).forEach(i => i.closest('label').classList.toggle('on', i.checked));
+}
+function updateNotice(){
+  const n = $('#notice'); if (!n) return;
+  n.classList.toggle('ex', isExample);
+  $('#noticeText').textContent = isExample ? t('ex_note') : t('own_note');
+}
+function updateShare(){
+  $('#shareOut').textContent = `${state.share}%`;
+  const wf = WF(state.workflow);
+  $('#shareHint').textContent = wf ? t('share_hint').replace('{w}', tx(wf.name)) : t('share_hint_none');
+}
+function renderResults(){
+  const c = compute();
+  $('#result').innerHTML = panelHTML(c);
+  $('#brief').innerHTML = briefHTML(c);
+  $('#handoff').textContent = handoffText(c);
+  $('#mbar').innerHTML = mbarHTML(c);
+}
+
+/* ---------- events ---------- */
+function onInput(e){
+  const el = e.target;
+  if (el.type === 'radio' && el.name){
+    if (el.name === 'workflow'){
+      state.workflow = el.value;
+      if (!state.shareTouched){ state.share = WF(el.value).share; $('#f-share').value = state.share; }
+    } else {
+      state.q[el.name] = el.value;
+    }
+    syncOn(el.name);
+  } else if (el.dataset && el.dataset.field){
+    const f = el.dataset.field;
+    if (f === 'people' || f === 'hours' || f === 'rate' || f === 'share'){
+      const v = el.value === '' ? null : Number(el.value);
+      state[f] = (v == null || isNaN(v)) ? null : v;
+      if (f === 'share') state.shareTouched = true;
+    } else {
+      state[f] = el.value;
+    }
+  } else return;
+  if (isExample){ isExample = false; updateNotice(); }
+  updateShare();
+  renderResults();
+}
+app.addEventListener('input', onInput);
+app.addEventListener('change', onInput);
+app.addEventListener('submit', e => e.preventDefault());
+app.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.id === 'btnLang'){
+    lang = lang === 'en' ? 'ar' : 'en';
+    try { localStorage.setItem('arc-lang', lang); } catch (_) {}
+    renderApp();
+  } else if (b.id === 'btnNote'){ openNote(); }
+  else if (b.id === 'btnBlank'){ state = blankState(); isExample = false; renderApp(); }
+  else if (b.id === 'btnExample'){ state = exampleState(); isExample = true; renderApp(); }
+  else if (b.id === 'btnCopy'){ copyHandoff(); }
+  else if (b.id === 'btnBook'){ $('#copyMsg').textContent = t('book_note'); }
+});
+function copyHandoff(){
+  const pre = $('#handoff'), msg = $('#copyMsg');
+  const fallback = () => {
+    try { const r = document.createRange(); r.selectNodeContents(pre); const s = window.getSelection(); s.removeAllRanges(); s.addRange(r); } catch (_) {}
+    msg.textContent = t('copy_fail');
+  };
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(pre.textContent).then(() => { msg.textContent = t('copied'); }, fallback);
+    } else fallback();
+  } catch (_) { fallback(); }
+}
+const note = $('#note');
+function openNote(){
+  try { if (typeof note.showModal === 'function') note.showModal(); else note.setAttribute('open', ''); }
+  catch (_) { note.setAttribute('open', ''); }
+}
+function closeNote(){
+  if (typeof note.close === 'function') note.close(); else note.removeAttribute('open');
+}
+note.addEventListener('click', e => {
+  if (e.target === note || e.target.closest('#btnClose')) closeNote();
+});
+
+renderApp();
+if (location.hash === '#note') openNote();
+})();
+</script>

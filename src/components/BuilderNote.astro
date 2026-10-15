@@ -1,0 +1,36 @@
+---
+// The builder's note: the pitch, in a modal dialog. Opens via any [data-open-note] or #note.
+import { t, type StringKey } from '../content/i18n';
+import type { Lang } from '../content/data';
+import { emphasise } from '../lib/render';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const plug: StringKey[] = ['note_plug1', 'note_plug2', 'note_plug3', 'note_plug4'];
+const measure: StringKey[] = ['note_m1', 'note_m2', 'note_m3', 'note_m4', 'note_m5'];
+const days: [StringKey, StringKey][] = [['d30', 'note_30'], ['d60', 'note_60'], ['d90', 'note_90']];
+---
+<dialog class="note" id="note" aria-labelledby="note-h">
+  <div class="note-head dark">
+    <span class="tag">{t(lang, 'note_eyebrow')}</span>
+    <button type="button" class="note-close" data-close-note aria-label={t(lang, 'close')}>×</button>
+  </div>
+  <div class="note-body">
+    <h2 id="note-h" set:html={emphasise(t(lang, 'note_h'))} />
+    <p>{t(lang, 'note_p1')}</p>
+    <h3>{t(lang, 'note_plug_h')}</h3>
+    <ul>{plug.map((k) => <li>{t(lang, k)}</li>)}</ul>
+    <h3>{t(lang, 'note_measure_h')}</h3>
+    <ul>{measure.map((k) => <li>{t(lang, k)}</li>)}</ul>
+    <h3>{t(lang, 'note_90_h')}</h3>
+    <ol class="days">
+      {days.map(([d, n]) => <li><span class="tag">{t(lang, d)}</span><span>{t(lang, n)}</span></li>)}
+    </ol>
+    <div class="about">
+      <strong>{t(lang, 'me_name')}</strong>
+      <p>{t(lang, 'me_line')}</p>
+      <p class="contact"><span dir="ltr">+971 54 125 6623</span><span dir="ltr">mohammedimad031@gmail.com</span></p>
+      <p class="fine">{t(lang, 'built_with')}</p>
+    </div>
+  </div>
+</dialog>

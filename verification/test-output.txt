@@ -1,0 +1,38 @@
+
+ RUN  v3.2.7 C:/Users/MOHAMMED IMAD/Hashinclude/agentic-readiness
+
+ ✓ src/content/content.test.ts > content parity with the reference build > every reference string is present and unchanged 26ms
+ ✓ src/content/content.test.ts > content parity with the reference build > the split headline reassembles to the reference H1 0ms
+ ✓ src/content/content.test.ts > content parity with the reference build > questions, options and scores match 1ms
+ ✓ src/content/content.test.ts > content parity with the reference build > gap fixes, workflows, tiers, phases and choice lists match 3ms
+ ✓ src/lib/scoring.test.ts > worked example: 40-person Dubai logistics company > scores 52 and lands in "Ready for a scoped pilot" 5ms
+ ✓ src/lib/scoring.test.ts > worked example: 40-person Dubai logistics company > recommends the Compact tier with the Compact reason 1ms
+ ✓ src/lib/scoring.test.ts > worked example: 40-person Dubai logistics company > returns 1,440 hours, AED 100,800, 0.8 FTE and a 7–11 month payback 213ms
+ ✓ src/lib/scoring.test.ts > worked example: 40-person Dubai logistics company > is lead priority B 1ms
+ ✓ src/lib/scoring.test.ts > worked example: 40-person Dubai logistics company > flags Q2, Q4, Q6 and Q7 as gaps, all scoring 1 1ms
+ ✓ src/lib/scoring.test.ts > worked example: 40-person Dubai logistics company > writes the lead summary 3ms
+ ✓ src/lib/scoring.test.ts > all answers at 3 > scores 100, "Ready to build", priority A, no gaps 1ms
+ ✓ src/lib/scoring.test.ts > government sector > moves to Sovereign with an open-ended payback shown as "from N" 1ms
+ ✓ src/lib/scoring.test.ts > tier triggers > systems 2–3 → Standard 0ms
+ ✓ src/lib/scoring.test.ts > tier triggers > systems 4–6 and 7+ → Platform 0ms
+ ✓ src/lib/scoring.test.ts > tier triggers > workflows 2–3 → Standard, 4+ → Platform 0ms
+ ✓ src/lib/scoring.test.ts > tier triggers > team 201–1,000 → Standard, 1,000+ → Platform 0ms
+ ✓ src/lib/scoring.test.ts > tier triggers > on-premise or air-gapped data → Sovereign 0ms
+ ✓ src/lib/scoring.test.ts > tier triggers > takes the highest trigger and keeps every reason 0ms
+ ✓ src/lib/scoring.test.ts > tier triggers > asks for missing inputs 0ms
+ ✓ src/lib/scoring.test.ts > tier triggers > Standard payback is a closed range 0ms
+ ✓ src/lib/scoring.test.ts > incomplete answers > give a null score and a pending priority 1ms
+ ✓ src/lib/scoring.test.ts > incomplete answers > a blank state has no score, no ROI and no gaps 0ms
+ ✓ src/lib/scoring.test.ts > bands and priority boundaries > splits at 40 and 70 0ms
+ ✓ src/lib/scoring.test.ts > bands and priority boundaries > a weak profile maps before it builds, with gaps sorted lowest first 0ms
+ ✓ src/lib/scoring.test.ts > bands and priority boundaries > readinessScore needs all seven 0ms
+ ✓ src/lib/scoring.test.ts > ROI edge cases > needs every number 0ms
+ ✓ src/lib/scoring.test.ts > ROI edge cases > rounds value to the nearest AED 100 0ms
+ ✓ src/lib/scoring.test.ts > ROI edge cases > clamps out-of-range inputs to the form bounds 0ms
+ ✓ src/lib/scoring.test.ts > ROI edge cases > payback can run past the 36-month warning threshold 0ms
+
+ Test Files  2 passed (2)
+      Tests  29 passed (29)
+   Start at  19:59:55
+   Duration  2.77s (transform 711ms, setup 0ms, collect 1.11s, tests 272ms, environment 1ms, prepare 1.79s)
+

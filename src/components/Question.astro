@@ -1,0 +1,28 @@
+---
+// One of the seven questions: a real fieldset whose legend holds the visible question,
+// with single-choice options scored 0–3. Extra content (the workflow picker) goes in the slot.
+import { t } from '../content/i18n';
+import type { Lang, Question } from '../content/data';
+
+interface Props { q: Question; index: number; lang: Lang; selected?: string }
+const { q, index, lang, selected } = Astro.props;
+const num = String(index + 1).padStart(2, '0');
+---
+<div class="q" id={`card-${q.id}`}>
+  <fieldset class="opts" aria-describedby={`${q.id}-why`}>
+    <legend class="q-legend">
+      <span class="step-num" dir="ltr">{num}</span>
+      <h3>{q.title[lang]}</h3>
+    </legend>
+    <p class="why" id={`${q.id}-why`}><b>{t(lang, 'why')}</b> {q.why[lang]}</p>
+    <div class="opts-list">
+      {q.opts.map((o) => (
+        <label class="opt" for={`${q.id}-${o.id}`}>
+          <input type="radio" name={q.id} id={`${q.id}-${o.id}`} value={o.id} checked={selected === o.id} />
+          <span>{o[lang]}</span>
+        </label>
+      ))}
+    </div>
+  </fieldset>
+  <slot />
+</div>

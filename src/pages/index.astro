@@ -1,0 +1,26 @@
+---
+// Entry point: sends visitors to their remembered language (localStorage), else English.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const en = `${base}/en/readiness/`;
+const ar = `${base}/ar/readiness/`;
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Agentic AI readiness check</title>
+    <script is:inline define:vars={{ en, ar }}>
+      var target = en;
+      try { if (localStorage.getItem('arc-lang') === 'ar') target = ar; } catch (_) {}
+      if (location.hash === '#ar') target = ar;
+      if (location.hash === '#note') target += '#note';
+      location.replace(target);
+    </script>
+    <noscript><meta http-equiv="refresh" content={`0; url=${en}`} /></noscript>
+  </head>
+  <body style="background:#0d0d0d;color:#f4f4f4;font-family:system-ui,sans-serif">
+    <p><a href={en} style="color:#78a9ff">English</a> · <a href={ar} lang="ar" style="color:#78a9ff">عربي</a></p>
+  </body>
+</html>

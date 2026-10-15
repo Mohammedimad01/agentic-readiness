@@ -1,0 +1,8 @@
+en-mobile    performance 99  accessibility 100  best-practices 100  seo 60
+    seo: is-crawlable (0) 
+en-desktop   performance 99  accessibility 100  best-practices 100  seo 60
+    seo: is-crawlable (0) 
+ar-mobile    performance 96  accessibility 100  best-practices 100  seo 60
+    seo: is-crawlable (0) 
+ar-desktop   performance 99  accessibility 100  best-practices 100  seo 60
+    seo: is-crawlable (0) 
