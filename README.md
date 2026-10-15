@@ -144,7 +144,6 @@ and client markup cannot drift.
 - **Nav.** Hashinclude's nav collapses to a hamburger on small screens. Here the site links are hidden below 1100px instead, since they are secondary to the tool; the language switch stays visible, and the builder's note is reachable from the hero and the blue band.
 - **Contrast.** Two Hashinclude styles fail WCAG AA (light-grey source labels on white; Carbon's yellow-60 text). This build darkens them (`#6f6f6f`, `#7a5b00`).
 - **No logos or photography.** The wordmark is text in IBM Plex Sans.
-- **Wording to confirm.** The builder's note says *"Researched and built in a day"*; the project brief plans three days. Adjust `built_with` in `i18n.ts` if needed.
 
 ## Not in scope
 

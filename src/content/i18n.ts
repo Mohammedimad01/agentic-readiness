@@ -134,6 +134,7 @@ const S = {
   me_name: { en: 'Mohammed Imad Thotan', ar: 'محمد عماد ثوتان' },
   // Reworded at the author's request (not the reference wording).
   me_line: { en: 'AI Analyst and automation expert · Technical Lead – Software Developer at Qlovix · Founder of SkillBridge, an AI-enabled employability platform', ar: 'محلل ذكاء اصطناعي وخبير في الأتمتة · قائد تقني ومطور برمجيات في Qlovix · مؤسس SkillBridge، منصة توظيف مدعومة بالذكاء الاصطناعي' },
+  // Kept for parity with the reference build; no longer shown on the page.
   built_with: { en: 'Researched and built in a day, with Claude as co-builder.', ar: 'بُحثت وبُنيت في يوم واحد، بمساعدة Claude.' },
   foot1: { en: 'Concept prototype by Mohammed Imad Thotan. Not affiliated with or endorsed by Hashinclude.', ar: 'نموذج أولي مقترح من إعداد محمد عماد ثوتان، وغير تابع لـHashinclude أو معتمد منها.' },
   foot2: { en: "Scores and value estimates are indicative. Scope ranges, project figures and the seven questions come from Hashinclude's public website, read in October 2026:", ar: 'الدرجات وتقديرات القيمة إرشادية. نطاقات المشاريع وأرقامها والأسئلة السبعة مأخوذة من موقع Hashinclude العام، بتاريخ أكتوبر 2026:' },
