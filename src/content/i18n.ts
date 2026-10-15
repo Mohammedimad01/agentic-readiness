@@ -132,7 +132,8 @@ const S = {
   note_60: { en: 'Turn delivered projects into sector ROI benchmarks and one-page case briefs for sales conversations.', ar: 'تحويل المشاريع المنفذة إلى مؤشرات عائد حسب القطاع، وملخصات حالات من صفحة واحدة لمحادثات المبيعات.' },
   note_90: { en: 'Ship the Arabic-first version, and adapt one for the Dubai Chamber business-council training tracks the mandate created.', ar: 'إطلاق النسخة العربية أولاً، وتكييف نسخة لمسارات التدريب في مجالس الأعمال التابعة لغرفة دبي التي أنشأها التوجيه.' },
   me_name: { en: 'Mohammed Imad Thotan', ar: 'محمد عماد ثوتان' },
-  me_line: { en: 'BBA in Business Analytics, MAHE Manipal (2026) · Technical Lead, Web Development at Qlovix · Founder of SkillBridge, an AI-enabled employability platform', ar: 'بكالوريوس إدارة الأعمال في تحليلات الأعمال، جامعة مانيبال (MAHE) 2026 · قائد تقني لتطوير الويب في Qlovix · مؤسس SkillBridge، منصة توظيف مدعومة بالذكاء الاصطناعي' },
+  // Reworded at the author's request (not the reference wording).
+  me_line: { en: 'AI Analyst and automation expert · Technical Lead – Software Developer at Qlovix · Founder of SkillBridge, an AI-enabled employability platform', ar: 'محلل ذكاء اصطناعي وخبير في الأتمتة · قائد تقني ومطور برمجيات في Qlovix · مؤسس SkillBridge، منصة توظيف مدعومة بالذكاء الاصطناعي' },
   built_with: { en: 'Researched and built in a day, with Claude as co-builder.', ar: 'بُحثت وبُنيت في يوم واحد، بمساعدة Claude.' },
   foot1: { en: 'Concept prototype by Mohammed Imad Thotan. Not affiliated with or endorsed by Hashinclude.', ar: 'نموذج أولي مقترح من إعداد محمد عماد ثوتان، وغير تابع لـHashinclude أو معتمد منها.' },
   foot2: { en: "Scores and value estimates are indicative. Scope ranges, project figures and the seven questions come from Hashinclude's public website, read in October 2026:", ar: 'الدرجات وتقديرات القيمة إرشادية. نطاقات المشاريع وأرقامها والأسئلة السبعة مأخوذة من موقع Hashinclude العام، بتاريخ أكتوبر 2026:' },
@@ -157,7 +158,7 @@ const S = {
 export type StringKey = keyof typeof S;
 
 /** Keys added in this build; everything else is verbatim from the reference. */
-export const NEW_STRINGS: StringKey[] = ['bar_note', 'skip', 'h1_a', 'h1_b', 'start', 'nav_who', 'nav_how', 'nav_projects', 'nav_insights', 'lang_switch', 'term_note', 'formula', 'foot_sources', 'foot_automate', 'foot_noindex'];
+export const NEW_STRINGS: StringKey[] = ['bar_note', 'me_line', 'skip', 'h1_a', 'h1_b', 'start', 'nav_who', 'nav_how', 'nav_projects', 'nav_insights', 'lang_switch', 'term_note', 'formula', 'foot_sources', 'foot_automate', 'foot_noindex'];
 
 export const STRINGS: Record<StringKey, L> = S;
 

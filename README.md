@@ -140,7 +140,7 @@ and client markup cannot drift.
 - **No live Arabic page to match.** hashinclu.de's `/ar/` routes currently serve the English LTR page, so the RTL layout is extrapolated from the LTR system.
 - **Fonts are self-hosted** (Fontsource, `font-display: swap`) instead of Google Fonts: same families and weights, no third-party request.
 - **Disclosure wording.** The top bar uses the brief's English wording; the Arabic keeps the reference translation. Everything else is verbatim from the reference build, enforced by `src/content/content.test.ts`.
-- **New strings** not in the reference (`skip`, split headline, `start`, nav labels, `term_note`, `formula`, footer labels, `foot_noindex`) are listed in `NEW_STRINGS` in `src/content/i18n.ts`. **Their Arabic still needs the planned native-speaker review.**
+- **New or reworded strings** (your profile line `me_line`, `skip`, split headline, `start`, nav labels, `term_note`, `formula`, footer labels, `foot_noindex`) are listed in `NEW_STRINGS` in `src/content/i18n.ts`. **Their Arabic still needs the planned native-speaker review.**
 - **Nav.** Hashinclude's nav collapses to a hamburger on small screens. Here the site links are hidden below 1100px instead, since they are secondary to the tool; the language switch stays visible, and the builder's note is reachable from the hero and the blue band.
 - **Contrast.** Two Hashinclude styles fail WCAG AA (light-grey source labels on white; Carbon's yellow-60 text). This build darkens them (`#6f6f6f`, `#7a5b00`).
 - **No logos or photography.** The wordmark is text in IBM Plex Sans.
